@@ -1,0 +1,1628 @@
+// JFE has not been added yet still counts as generic RESELLER
+
+function XRMPROJBUTTONset() {
+
+var ui = SpreadsheetApp.getUi();
+var ss = SpreadsheetApp.getActiveSpreadsheet();  //getting Spreadsheet
+var datasheet = ss.getSheetByName("Orders") ;
+var datasheet2 = ss.getSheetByName("Monthly Projection"); // 
+var datasheet3 = ss.getSheetByName("Legend");
+var testday = datasheet3.getRange("H30").getDisplayValue();
+var userinputday = Utilities.formatDate(new Date(testday), "CST", "MM/yyyy");
+var response = ui.alert("Confirm you want to generate the projected sales for" + " " + userinputday, ui.ButtonSet.OK_CANCEL);
+
+
+if (response == ui.Button.OK) {
+  Browser.msgBox("Generating report, please do not refresh your browser or click off this Spreadsheet");
+} else {
+  //Browser.msgBox();
+  return
+}
+
+
+
+
+var ct=1;
+var arraydata = datasheet.getDataRange().getDisplayValues();
+//var arraydata2 = finalinvsheet.getDataRange();
+
+var column = datasheet2.getRange('A:A');
+var values = column.getValues(); // get all data in one call
+var rows = datasheet2.getRange('A:K');
+//var rowsvalues = row.getValue();
+var r = 1;
+var rowlimit = datasheet2.getLastRow();
+var rowlimitclear = rowlimit + 1;
+
+
+
+
+
+
+do  {
+    ct++;
+    //Logger.log(ct);
+    datasheet2.getRange(ct,1).clearContent();
+    datasheet2.getRange(ct,2).clearContent();
+    datasheet2.getRange(ct,3).clearContent();
+    datasheet2.getRange(ct,4).clearContent();
+    datasheet2.getRange(ct,5).clearContent();
+    datasheet2.getRange(ct,6).clearContent();
+    datasheet2.getRange(ct,7).clearContent();
+    //datasheet2.deleteRows
+ 
+  }
+  while (ct != rowlimitclear);
+
+//Browser.msgBox("Script is running please wait");
+
+for (var i=3, arraycall = arraydata.length; i < arraycall; i++){  //arraycall = arraydata.length;
+      arraydata[i][16] = Utilities.formatDate(new Date(arraydata[i][16]), "CST", "MM/yyyy"); // converts mm/dd/yyy into mm/yyyy inside an array
+      
+      //Nested 1
+
+      if (arraydata[i][16] == userinputday && arraydata[i][5].indexOf("DEMO") == -1 && arraydata[i][2].indexOf("-") == -1){ //Check if the array is this month
+        r++
+        datasheet2.getRange(r,1).setValue(arraydata[i]) //company name
+        datasheet2.getRange(r,2).setValue(arraydata[i][2]) // order number
+        datasheet2.getRange(r,3).setValue(arraydata[i][10]) // employee initials
+        datasheet2.getRange(r,4).setValue(arraydata[i][11]) // customer type
+        datasheet2.getRange(r,5).setValue(arraydata[i][12]) // model
+        datasheet2.getRange(r,6).setValue(arraydata[i][15]) // quantity
+
+          if(arraydata[i][11] == "W" || arraydata[i][11] == "R"){
+            datasheet2.getRange(r,3).setValue(arraydata[i][11]) // replace employee initials with "W" or "R"
+
+          }
+        
+        // EXPIREMENT to post PO next to price for easy verification
+        //var urllink=arraydata[i][5].getFormulaR1C1()
+        //datasheet2.getRange(r,8).setValue(urllink)
+        //datasheet2.getRange(r,8).setValue(arraydata[i][5]) 
+        //END
+        
+        //Nest
+          //END USER
+            //END USER IPAD 10/15/20 discount
+
+              //END USER 0 TIER IPAD 
+              if (  // super fat if statement
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" ||
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][5] !=="DEMO" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1680)
+
+              }
+
+                          //WEBSITE NEVER DISCOUNT
+                          if (
+                          (
+                            arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                            arraydata[i][12] == "XCRiPad 10.2" || 
+                            arraydata[i][12] == "XCRiPad 2018" || 
+                            arraydata[i][12] == "XCRiPad 2017" ||
+                            arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                            arraydata[i][12] == "XCRiPad Pro 11" ||
+                            arraydata[i][12] == "XCRiPad Pro 10.5"||
+                            arraydata[i][12] == "XCRiPad Pro 9.7"||
+                            arraydata[i][12] == "XCRiPad Air 10.9"||
+                            arraydata[i][12] == "XCRiPad Air 10.5"||
+                            arraydata[i][12] == "XCRiPad Air 2"||
+                            arraydata[i][12] == "XCRiPad Air 1"||
+                            arraydata[i][12] == "XCRiPad 2/3/4"
+                          ) 
+                          && arraydata[i][11] == "W"                                                          
+                        ) 
+                      {                                                         
+                                                                                        
+                        datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1680)
+
+                      }
+
+              //END USER 1ST TIER DISCOUNT IPAD
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                           
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1515)
+
+              }
+
+              //END USER 2ND TIER DISCOUNT IPAD
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                             
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+              //END USER 3RD TIER DISCOUNT IPAD
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                            
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1345)
+
+              }
+                //not a nest
+                    //END USER 0 TIER XCZ1  
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2560)
+
+                    }
+
+                                //WEBSITE NEVER DISCOUNT
+                                if ( 
+                                    (
+                                      arraydata[i][12] == "XCZ1 mini 5" || 
+                                      arraydata[i][12] == "XCZ1 mini 4" 
+                                    ) 
+                                    && arraydata[i][11] == "W"                                                         
+                                  ) 
+                                {                                                         
+                                                                                                  
+                                  datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2560)
+
+                                }
+
+                                  
+
+                    //END USER 1ST TIER XCZ1   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                             
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2315)
+
+                    }
+
+                    //END USER 2ND TIER XCZ1   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2195)
+
+                    }
+
+                     //END USER 3RD TIER XCZ1   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2070)
+
+                    }
+
+                  //XCRipad mini
+
+                    //END USER 0 TIER IPAD mini 0%    
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1510)
+
+                    }
+
+                                    //WEBSITE NEVER DISCOUNT    
+
+                                    if ( 
+                                        (
+                                          arraydata[i][12] == "XCRiPad mini 5" || 
+                                          arraydata[i][12] == "XCRiPad mini 4" 
+                                        ) 
+                                        && arraydata[i][11] == "W"                                                          
+                                      ) 
+                                    {                                                         
+                                                                                                      
+                                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1510)
+
+                                    }
+
+                    //END USER 1 TIER IPAD mini 10%   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1360)
+
+                    }
+
+                    //END USER 2 TIER IPAD mini 15%   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1285)
+
+                    }
+
+                    //END USER 3 TIER IPAD mini 20%
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1210)
+
+                    }
+
+            //END USER SAMSUNG
+
+              //END USER 0 TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 685)
+
+              }
+
+                              //WEBSITE NEVER DISCOUNT
+                                
+                              if ( 
+                                  (
+                                    arraydata[i][12] == "XCS21" || 
+                                    arraydata[i][12] == "XCS10" || 
+                                    arraydata[i][12] == "XCS9" || 
+                                    arraydata[i][12] == "XCS8"
+                                  
+                                  ) 
+                                  && arraydata[i][11] == "W"                                                           
+                                ) 
+                              {                                                         
+                                                                                                
+                                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 685)
+
+                              }            
+
+              //END USER 1 TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 620)
+
+              }
+
+              //END USER 2 TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+
+               //END USER 3 TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+
+            //END USER WINDOWS
+
+              //END USER 0 TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1685)
+
+              }
+
+                              //WEBSITE U GET IT
+                                
+                              if ( 
+                                  (
+                                    arraydata[i][12] == "XCWin Go 2" || 
+                                    arraydata[i][12] == "XCWin Go"
+                                  
+                                  ) 
+                                  && arraydata[i][11] == "W"                                                            
+                                ) 
+                              {                                                         
+                                                                                                
+                                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1685)
+
+                              }              
+
+              //END USER 1 TIER SURFACE GO
+                
+              if ( 
+                  (
+                   arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1520)
+
+              }
+
+              //END USER 2 TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+               //END USER 3 TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1350)
+
+              }
+
+              //END USER 0 TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1785)
+
+              }
+
+                              if ( 
+                                  (
+                                    arraydata[i][12] == "XCPro 2018" ||
+                                    arraydata[i][12] == "XCPro 2017" ||
+                                    arraydata[i][12] == "XCPro 4" ||
+                                    arraydata[i][12] == "XCPro 3"
+                                  
+                                  ) 
+                                  && arraydata[i][11] == "W"                                                            
+                                ) 
+                              {                                                         
+                                                                                                
+                                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1785)
+
+                              }
+
+
+              //END USER 1 TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1605)
+
+              }
+
+              //END USER 2 TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1520)
+
+              }
+
+              //END USER 3 TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+            //END USER IPHONE
+
+              //END USER 0 TIER IPHONE BIG
+                // left 12, 11, 11 pro and pro max at 735, remind myself to bring it up in the meeting
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 735)
+
+              }
+
+                                if ( 
+                                    (
+                                      arraydata[i][12] == "XCiPhone 11" || 
+                                      arraydata[i][12] == "XCiPhone 11 Pro" || 
+                                      arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                                      arraydata[i][12] == "XCiPhone 12" || 
+                                      arraydata[i][12] == "XCiPhone XS Max" ||
+                                      arraydata[i][12] == "XCiPhone 8+"||
+                                      arraydata[i][12] == "XCiPhone 7+"||
+                                      arraydata[i][12] == "XCiPhone 6+"
+                                    ) 
+                                    && arraydata[i][11] == "W"                                                            
+                                  ) 
+                                {                                                         
+                                                                                                  
+                                  datasheet2.getRange(r,7).setValue(arraydata[i][15] * 735)
+
+                                }
+
+              //END USER 1ST TIER IPHONE BIG
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 670)
+
+              }
+
+               //END USER 2ND TIER IPHONE BIG
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 625)
+
+              }
+
+              //END USER 3RD TIER IPHONE BIG
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                           
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 590)
+
+              }
+
+              //END USER 0 TIER IPHONE SMALL
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] < 10                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 685)
+
+              }
+
+                                if ( 
+                                    (
+                                      arraydata[i][12] == "XCiPhone SE" || 
+                                      arraydata[i][12] == "XCiPhone XR" || 
+                                      arraydata[i][12] == "XCiPhone 12 mini" || 
+                                      arraydata[i][12] == "XCiPhone 8" || 
+                                      arraydata[i][12] == "XCiPhone 7" ||
+                                      arraydata[i][12] == "XCiPhone XS"||
+                                      arraydata[i][12] == "XCiPhone X"||
+                                      arraydata[i][12] == "XCiPhone 6s" ||
+                                      arraydata[i][12] == "XCiPhone 6"
+                                    ) 
+                                    && arraydata[i][11] == "W"                                                          
+                                  ) 
+                                {                                                         
+                                                                                                  
+                                  datasheet2.getRange(r,7).setValue(arraydata[i][15] * 685)
+
+                                }
+
+              //END USER 1ST TIER IPHONE SMALL 10%
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 10 && arraydata[i][15] <= 49                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 620)
+
+              }
+
+              //END USER 2ND TIER IPHONE SMALL 15%
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 50 && arraydata[i][15] <= 99                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+
+              //END USER 3RD TIER IPHONE SMALL 20%
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "C" && arraydata[i][15] >= 99                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+
+
+
+
+                //////////RESELLER NO MOBEXX COMMCO/////////////
+                //////////RESELLER/////////////
+                //////////RESELLER/////////////
+                //////////RESELLER NO MOBEXX COMMCO/////////////
+
+
+
+
+
+              //RESELLER NMC 1 TIER IPAD 
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                           
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+              //RESELLER NMC 2ND TIER DISCOUNT IPAD
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                            
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1345)
+
+              }
+                //not a nest
+                    //RESELLER NMC 1ST TIER XCZ1   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && 
+                        arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2195)
+
+                    }
+
+                     //RESELLER NMC 2ND TIER XCZ1   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" || 
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && 
+                        arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2070)
+
+                    }
+
+                    //RESELLER NMC 1ST TIER IPAD mini 15%   
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && 
+                        arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1285)
+
+                    }
+
+                    //RESELLER NMC 2ND TIER IPAD mini 20%
+
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" || 
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && 
+                        arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1210)
+
+                    }
+
+            //RESELLER NMC SAMSUNG
+
+              //RESELLER NMC 1ST TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+
+               //RESELLER NMC 2ND TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+
+            //RESELLER NMC WINDOWS
+
+              //RESELLER NMC 1ST TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+               //RESELLER 2ND TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1350)
+
+              }
+
+              //RESELLER NMC 1ST TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1520)
+
+              }
+
+              //RESELLER NMC 2ND TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+            //RESELLER NMC IPHONE
+
+               //RESELLER NMC 1ST TIER IPHONE BIG
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 625)
+
+              }
+
+              //RESELLER NMC 2ND TIER IPHONE BIG
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone XS Max" ||
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                           
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 590)
+
+              }
+
+              //RESELLER 1ST TIER IPHONE SMALL 15%
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] < 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+
+              //RESELLER 2ND TIER IPHONE SMALL 20%
+
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone SE" || 
+                    arraydata[i][12] == "XCiPhone XR" || 
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone XS"||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][0] !== "COMM-CO" && arraydata[i][15] >= 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+
+
+
+                //////////MOBEXX COMM-CO/////////////
+                //////////MOBEXX COMM-CO/////////////
+                //////////MOBEXX COMM-CO/////////////
+                //////////MOBEXX COMM-CO/////////////
+
+
+
+
+
+              //MOBEXX 1 TIER IPAD 
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] == "MOBEXX" && arraydata[i][15] < 50                                                           
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1260)
+
+              }
+
+              //MOBEXX 2 TIER IPAD 
+
+              if (  
+                  (
+                    arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                    arraydata[i][12] == "XCRiPad 10.2" || 
+                    arraydata[i][12] == "XCRiPad 2018" || 
+                    arraydata[i][12] == "XCRiPad 2017" || 
+                    arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                    arraydata[i][12] == "XCRiPad Pro 11" ||
+                    arraydata[i][12] == "XCRiPad Pro 10.5"||
+                    arraydata[i][12] == "XCRiPad Pro 9.7"||
+                    arraydata[i][12] == "XCRiPad Air 10.9"||
+                    arraydata[i][12] == "XCRiPad Air 10.5"||
+                    arraydata[i][12] == "XCRiPad Air 2"||
+                    arraydata[i][12] == "XCRiPad Air 1"||
+                    arraydata[i][12] == "XCRiPad 2/3/4"
+                  ) 
+                  && arraydata[i][11] == "R" && arraydata[i][0] !== "MOBEXX" && arraydata[i][15] >= 50                                                            
+                )  
+              {
+                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1260) // NO PRICE CHANGE UNTIL CONFIRMATION
+
+              }
+
+                                      //COMMCO 1 TIER IPAD 
+
+                                      if (  
+                                          (
+                                            arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                                            arraydata[i][12] == "XCRiPad 10.2" || 
+                                            arraydata[i][12] == "XCRiPad 2018" || 
+                                            arraydata[i][12] == "XCRiPad 2017" || 
+                                            arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                                            arraydata[i][12] == "XCRiPad Pro 11" ||
+                                            arraydata[i][12] == "XCRiPad Pro 10.5"||
+                                            arraydata[i][12] == "XCRiPad Pro 9.7"||
+                                            arraydata[i][12] == "XCRiPad Air 10.9"||
+                                            arraydata[i][12] == "XCRiPad Air 10.5"||
+                                            arraydata[i][12] == "XCRiPad Air 2"||
+                                            arraydata[i][12] == "XCRiPad Air 1"||
+                                            arraydata[i][12] == "XCRiPad 2/3/4"
+                                          ) 
+                                          && arraydata[i][11] == "R" && arraydata[i][0] == "COMM-CO" && arraydata[i][15] < 50                                                           
+                                        )  
+                                      {
+                                        
+                                        datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+                                      }
+                                      //COMMCO 2 TIER IPAD 
+                                      if (  
+                                          (
+                                            arraydata[i][12] == "XCRiPad 10.2 8th gen" || 
+                                            arraydata[i][12] == "XCRiPad 10.2" || 
+                                            arraydata[i][12] == "XCRiPad 2018" || 
+                                            arraydata[i][12] == "XCRiPad 2017" || 
+                                            arraydata[i][12] == "XCRiPad Pro 11 2020" || 
+                                            arraydata[i][12] == "XCRiPad Pro 11" ||
+                                            arraydata[i][12] == "XCRiPad Pro 10.5"||
+                                            arraydata[i][12] == "XCRiPad Pro 9.7"||
+                                            arraydata[i][12] == "XCRiPad Air 10.9"||
+                                            arraydata[i][12] == "XCRiPad Air 10.5"||
+                                            arraydata[i][12] == "XCRiPad Air 2"||
+                                            arraydata[i][12] == "XCRiPad Air 1"||
+                                            arraydata[i][12] == "XCRiPad 2/3/4"
+                                          ) 
+                                          && arraydata[i][11] == "R" && arraydata[i][0] == "COMM-CO" && arraydata[i][15] >= 50                                                           
+                                        )  
+                                      {
+                                        
+                                        datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1345)
+
+                                      }
+
+                    //MOB & COM 1ST TIER XCZ1 mini 5
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] < 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2195)
+
+                    }
+                    //MOB & COM 2nd TIER XCZ1 mini 5
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 5" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] >= 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 2070)
+
+                    }               
+                    //MOB & COM 1ST TIER XCZ1 mini 4
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] < 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1955)
+
+                    }
+                    //MOB & COM 2nd TIER XCZ1 mini 4
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCZ1 mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO")
+                         && arraydata[i][15] >= 50                                                              
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1840)
+
+                    }
+                    //MOB & COMM 1ST TIER IPAD mini 5 15%   
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] < 50                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1285)
+
+                    } 
+                    //MOB & COMM 2ND TIER IPAD mini 5 20%
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 5"
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] >= 50                                                                
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1210)
+
+                    }
+                    //MOB & COMM 1ST TIER IPAD mini 4 SPECIAL I DONT REMEBER 
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 4" 
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] < 50                                                            
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1125)
+
+                    } 
+                    //MOB & COMM 2ND TIER IPAD mini 4 SPECIAL I DONT REMEBER
+                    if ( 
+                        (
+                          arraydata[i][12] == "XCRiPad mini 4"
+                        ) 
+                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                        arraydata[i][15] >= 50                                                                
+                      ) 
+                    {                                                         
+                                                                                      
+                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1060)
+
+                    }
+            //RESELLER MOB & COM SAMSUNG
+
+              //MOB & COM 1ST TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] < 50                                                              
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+
+               //MOB & COM 2ND TIER SAMSUNG PHONE
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCS21" || 
+                    arraydata[i][12] == "XCS10" || 
+                    arraydata[i][12] == "XCS9" || 
+                    arraydata[i][12] == "XCS8"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+                    
+            ////////////////// I STOPPED HERE //////////////////
+
+            //RESELLER mob & com WINDOWS
+
+              //RESELLER MOB & COM 1ST TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] < 50                                                                 
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+               //RESELLER MOB & COM TIER SURFACE GO
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCWin Go 2" || 
+                    arraydata[i][12] == "XCWin Go"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1350)
+
+              }
+
+              //RESELLER MOB & COM 1ST TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] < 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1520)
+
+              }
+
+              //RESELLER NMC 2ND TIER SURFACE PRO 
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCPro 2018" ||
+                    arraydata[i][12] == "XCPro 2017" ||
+                    arraydata[i][12] == "XCPro 4" ||
+                    arraydata[i][12] == "XCPro 3"
+                   
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] >= 50                                                            
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 1430)
+
+              }
+
+            //RESELLER MOB & COM IPHONE
+
+               //RESELLER MOB & COM 1ST TIER IPHONE BIG
+
+               if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] < 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 625)
+
+              }
+              if ( 
+                  ( 
+                    arraydata[i][12] == "XCiPhone 11 Pro" || 
+                    arraydata[i][12] == "XCiPhone 11 Pro Max" || 
+                    arraydata[i][12] == "XCiPhone 12" || 
+                    arraydata[i][12] == "XCiPhone 8+"||
+                    arraydata[i][12] == "XCiPhone 7+"||
+                    arraydata[i][12] == "XCiPhone 6+"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] >= 50                                                             
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 625)
+
+              }
+                                    // COM & MOB SPECIAL
+                                    if ( 
+                                        (
+                                          arraydata[i][12] == "XCiPhone 11" || 
+                                          arraydata[i][12] == "XCiPhone XS Max"
+                                          
+                                        ) 
+                                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                                        arraydata[i][15] < 50                                                             
+                                      ) 
+                                    {                                                         
+                                                                                                      
+                                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 555)
+
+                                    }
+                                    if ( 
+                                        (
+                                          arraydata[i][12] == "XCiPhone 11" || 
+                                          arraydata[i][12] == "XCiPhone XS Max"
+                                          
+                                        ) 
+                                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                                        arraydata[i][15] >= 50                                                             
+                                      ) 
+                                    {                                                         
+                                                                                                      
+                                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 525)
+
+                                    }
+              //RESELLER MOB & COM 1ST TIER IPHONE SMALL 15%
+                
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] < 50                                                                 
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 585)
+
+              }
+              if ( 
+                  (
+                    arraydata[i][12] == "XCiPhone 12 mini" || 
+                    arraydata[i][12] == "XCiPhone 8" || 
+                    arraydata[i][12] == "XCiPhone 7" ||
+                    arraydata[i][12] == "XCiPhone X"||
+                    arraydata[i][12] == "XCiPhone 6s" ||
+                    arraydata[i][12] == "XCiPhone 6"
+                  ) 
+                  && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                  arraydata[i][15] >= 50                                                                   
+                ) 
+              {                                                         
+                                                                                
+                datasheet2.getRange(r,7).setValue(arraydata[i][15] * 550)
+
+              }
+                                    if ( 
+                                        (
+                                          arraydata[i][12] == "XCiPhone SE" || 
+                                          arraydata[i][12] == "XCiPhone XR" || 
+                                          arraydata[i][12] == "XCiPhone XS"
+                                        ) 
+                                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                                        arraydata[i][15] < 50                                                                 
+                                      ) 
+                                    {                                                         
+                                                                                                      
+                                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 530)
+
+                                    }
+                                    if ( 
+                                        (
+                                          arraydata[i][12] == "XCiPhone SE" || 
+                                          arraydata[i][12] == "XCiPhone XR" || 
+                                          arraydata[i][12] == "XCiPhone XS"
+                                        ) 
+                                        && arraydata[i][11] == "R" && (arraydata[i][0] == "MOBEXX" || arraydata[i][0] == "COMM-CO") && 
+                                        arraydata[i][15] >= 50                                                             
+                                      ) 
+                                    {                                                         
+                                                                                                      
+                                      datasheet2.getRange(r,7).setValue(arraydata[i][15] * 500)
+
+                                    }
+                                    
+ 
+
+
+      }
+
+
+
+}
+Browser.msgBox("Script has completed");
+}
