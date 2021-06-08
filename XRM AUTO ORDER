@@ -1,0 +1,610 @@
+function METHOD2() {
+//"X" = User inputted value
+// ^(.*?)"X"(\D*)
+//multiordersplit[q].splice(3,1,"X") deprecated
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var datasheet = ss.getSheetByName("Sheet1");
+var datasheet2 = ss.getSheetByName("Sheet2");
+var datasheet3= ss.getSheetByName("Sheet3");
+var datasheet4= ss.getSheetByName("Sheet4");
+var multiorder= [];
+var multiordersplit=[];
+var multiordersplitvar2=[];
+
+var query = "from:derek@xciel.com is:unread is:inbox";
+var threads = GmailApp.search(query);
+
+var q = 0;
+var ct=0;
+
+var lastCol = datasheet.getLastColumn()
+var arraydata = datasheet.getDataRange().getDisplayValues();
+//var arraydata2 = finalinvsheet.getDataRange();
+//Logger.log(lastCol)
+var msgarrayad = [];
+var msgarray = [];
+var zipsplit =[];
+var multiprodcheck = ["iPad mini", "iPad Pro","iPad Air","iPad 10.2", "iPhone 11", "iPhone 11 Pro", 
+"iPhone 11 Pro Max", "iPhone 12", "iPhone XR", "iPhone 7","iPhone 7 Plus", "iPhone Mini 12", "XCiPhone8-A", "XCiPhone8"]
+var c1d2install = "c1d2-certification-required:Yes"
+var c1d2installvar1 = "Yes - Customer will ship device for C1D2 install"
+var column = datasheet.getRange('A:A');
+var r = 0;
+var rowlimit = datasheet.getLastRow();
+var rowlimitclear = rowlimit + 1;
+
+
+
+
+//datasheet.getDataRange().clearContent();
+
+      for (var i in threads) 
+      //for (var i=0; i<threads.length; i++)
+      {
+        var messages = threads[i].getMessages();
+        
+        for (var j in messages)
+        //for (var j=0; j<messages.length; j++)
+        
+        {
+          var message = messages[j]
+            if (message.isUnread())
+            {
+              
+              //.replace(/taxes(.*)\sCompany Address/gm,'');
+              
+              var msg = messages[j].getPlainBody().replace(/^NEW CUSTOMER ORDER:(.*?)832-699-6726/gm,"")
+              .replace(/^Payment(.*?)$/gm,"")
+              .replace(/^Image(.*?)Quantity/gm,"")
+              .replace(/^taxes(\s*?)(.*\d)/gm,"")
+              .replace(/^Tax(.*)/gm,"") // fixed
+              .replace(/^To.fight(.*?)chargeback./gm,"")
+              .replace(/^Need.More.Hazardous(.*?)$/gm,"")
+              .replace(/^www(.*?)$/gm,"").replace("Derek Doo","").replace("derek@xciel.com","").replace("832-491-5156","").replace("Xciel Inc.","")
+              .replace('sales@IntrinsicallySafestore.com <mailto:sales@IntrinsicallySafestore.com>',"")
+              .replace("+1-832-699-6726","").replace("Intrinsically Safe Store","")
+              .replace("Shipping Address:","").replace("Company Address:","").replace(" ","").replace(/^To.fight(.*?)chargeback./gm,"").trim()
+              
+            var msg2 = messages[j].getPlainBody()
+              .replace(/^NEW CUSTOMER ORDER:(.*?)832-699-6726/gm,"")
+              .replace(/^Payment(.*?)$/gm,"")
+              .replace(/^Image(.*?)Quantity/gm,"")
+              .replace(/^taxes(\s*?)(.*\d)/gm,"")
+              .replace(/^Tax(.*)/gm,"") // fixed
+              .replace(/^To.fight(.*?)chargeback./gm,"")
+              .replace(/^Need.More.Hazardous(.*?)$/gm,"")
+              .replace(/^www(.*?)$/gm,"")
+              .replace("Derek Doo","").replace("derek@xciel.com","").replace("832-491-5156","").replace("Xciel Inc.","")
+              .replace('sales@IntrinsicallySafestore.com <mailto:sales@IntrinsicallySafestore.com>',"")
+              .replace("+1-832-699-6726","").replace("Intrinsically Safe Store","")
+              .replace("Shipping Address:","").replace("Company Address:","").replace(" ","")
+              .replace(/\s{2,5}/g," ").trim()
+             
+              msgarray[q] = msg2.split(/\s\s/gm)
+              multiordersplit[q] = msg2.split(/\s\s/gm)
+              msgarrayad[q]= msg.split(/\n/gm)
+             
+
+              msgarrayad[q].splice(0,14)
+              msgarrayadlength = msgarrayad[q].length
+
+              
+              
+              
+              //var order = msgarray[q][1].slice(0,-1)
+             //Logger.log(order)
+             
+              //var elelength = msgarray[q][1].length
+              //var itemdescrip = msgarray[q][1]
+              //var qty = itemdescrip.substring(elelength - 1) // remove everything but the last item
+              //msgarray[q].splice(1, 1, order)
+              //msgarray[q].splice(2, 2, qty)
+            
+              
+        
+              
+              
+              for (i=0;i < msgarrayadlength;i++){ // loop it until the below conditions are met
+
+                
+
+               
+               
+                if (msgarrayad[q][0] == 0 && msgarrayad[q].length >= 5) //Fat trimmer, eats blank front rows unitl 5. Dont be stupid array.length starts at 1 when arrays[] start at 0
+                {  
+                msgarrayad[q].splice(0,1) 
+                }
+                // important top and bottom, connected
+                 if (msgarrayad[q][0] == 0 && msgarrayad[q].length == 4) //(company == attn) this needs to go below the fat trimmer or else it will never see it
+                { 
+                //Logger.log(msgarrayad[q][0])
+                msgarrayad[q][0] = msgarrayad[q][1]
+                //msgarray[q].push(msgarrayad[q])
+                
+                }
+
+                
+                
+
+
+
+
+
+
+                if (msgarrayad[q] !== 0 && msgarrayad[q].length == 4)
+                {
+                zipsplit[q] = msgarrayad[q][3].split(/\s/gm)
+                
+                //Logger.log(!Number(zipsplit[q][zipsplit[q].length-1]))
+
+              
+                  
+
+
+
+
+                  if (zipsplit[q].length == 5 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 3 word city converter with zip
+                  {
+                    zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
+                    
+                    zipsplit[q].splice(1,2)
+                    //zipsplit[q].splice(1,1)
+                    //zipsplit[q].splice(3,1)
+                    //Logger.log(zipsplit[q])
+
+                  }
+
+                  if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 3 word city converter NO zip
+                  {
+                    zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
+                    zipsplit[q].splice(1,2)
+                    //zipsplit[q].splice(1,1)
+                    //zipsplit[q].splice(3,1)
+                    zipsplit[q].push("MISSING ZIP")
+                    //Logger.log(zipsplit[q])
+
+                  }
+
+
+                  if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 2 word city converter with zip
+                  {
+                    var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
+                    zipsplit[q].splice(0,2,combinetwoname)
+                    //let removecomma = zipsplit[q][0]
+                    
+                    //zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1)
+                    
+                      
+                      //msgarrayad[q].splice(3,1)
+                      //msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
+                    //Logger.log(zipsplit[q])
+
+                  }
+
+                  if (zipsplit[q].length == 3 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true) && !zipsplit[q][zipsplit[q].length-1].includes("-") && 
+                  zipsplit[q][zipsplit[q].length-1] !=="MISSING ZIP") // 2 word city converter NO zip
+                  {
+                    
+                    //Logger.log(zipsplit[q][zipsplit[q].length-1].includes("-"))
+                    var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
+                    zipsplit[q].splice(0,2,combinetwoname)
+                    zipsplit[q].push("MISSING ZIP")
+                    //let removecomma = zipsplit[q][0]
+                    
+                    //zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1)
+                    
+                      
+                      //msgarrayad[q].splice(3,1)
+                      //msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
+                    
+                    
+
+                  }
+
+                  if (zipsplit[q].length == 2 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 1 WORD CITY NO ZIP // 00000 SAFETY CATCH IS REDUNDANT
+                  {
+                    zipsplit[q].push("MISSING ZIP")
+                    //Logger.log(zipsplit[q])
+
+                  }
+
+                  
+
+
+
+
+
+
+
+                  if (zipsplit[q].length == 3)
+                  {
+                    
+                    let removecomma = zipsplit[q][0]
+                    zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1) // might be a more efficent method than the original
+                    msgarrayad[q].splice(3,1)
+                    msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
+                    
+                    //Logger.log(msgarrayad[q])
+
+                    
+                    
+                  }
+                  
+                
+                  
+                 
+                }
+                
+
+                  
+          
+
+            
+
+              }
+              // convert 5 lines, coded this outside the fat trimmer prob going to regret later ngl
+              let zipsplit2 = []
+              zipsplit2[q] = msgarrayad[q][msgarrayad[q].length-1].split(/\s/gm)
+              if (msgarrayad[q].length == 5 && zipsplit2[q].length >= 2)
+              {
+                if (zipsplit2[q].length == 4)
+                {
+                  zipsplit2[q][0] = zipsplit2[q][0] + " " + zipsplit2[q][1]
+                  zipsplit2[q].splice(1,1)
+                  //Logger.log(zipsplit2[q])
+                }
+
+                let removecomma = zipsplit2[q][0]
+                zipsplit2[q][0] = removecomma.substring(zipsplit2[q][0].length -1,-1) // might be a more efficent method than the original
+                msgarrayad[q][2] = msgarrayad[q][2]+ " " + msgarrayad[q][3]
+                msgarrayad[q].splice(3,1)
+                msgarrayad[q].splice(msgarrayad[q].length-1, 1)
+                msgarrayad[q].push(zipsplit2[q][0], zipsplit2[q][1], zipsplit2[q][2])
+                
+                    
+                
+
+
+                //Logger.log(msgarrayad[q][3])
+                //Logger.log(msgarrayad[q])
+                //Logger.log(zipsplit2[q])
+              }
+           
+
+              
+              //msgarray[q].concat(msgarrayad[q])
+              //datasheet.appendRow(msgarrayad[q])   //this will output
+              
+
+              if (msgarray[q][1].includes("iPad Air 10.9") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCRiPad Air 10.9"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  
+                   // datasheet.appendRow(msgarrayad[q])
+
+                  }
+                  else if (msgarray[q][1].includes(c1d2install)) {
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCRiPad Air 10.9"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  else {
+                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
+                    msgarray[q][1] = "XCRiPad Air 10.9"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+
+               if (msgarray[q][1].includes("iPad 10.2") == true && msgarray[q][1].includes("8th gen") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else if (msgarray[q][1].includes(c1d2install)){
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  else{
+                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
+                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+
+               if (msgarray[q][1].includes("iPad 10.2") ==true && msgarray[q][1].includes("7th gen") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCRiPad 10.2"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else if(msgarray[q][1].includes(c1d2install)){
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCRiPad 10.2"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  else {
+                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
+                    msgarray[q][1] = "XCRiPad 10.2"
+                    msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+
+                if (msgarray[q][1].includes("iPad Pro 11") == true && msgarray[q][1].includes("2nd Gen") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCRiPad Pro 11 2020"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else if (msgarray[q][1].includes(c1d2install)){
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCRiPad Pro 11 2020"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  else{
+                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
+                    msgarray[q][1] = "XCRiPad Pro 11 2020"
+                    msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                }
+// BOOKMARK //
+               if (msgarray[q][1].includes("iPad Pro 9.7") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCRiPad Pro 9.7"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else {
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCRiPad Pro 9.7"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+
+               if (msgarray[q][1].indexOf("iPhone 11") !== -1 && msgarray[q][1].indexOf("Zone 1") !== -1){
+                  msgarray[q].splice(2,0,"Customer will supply")
+                  msgarray[q][1] = "XCZ1 iPhone 11"
+                  //msgarray[q].splice(msgarray[q].length-1,1)
+                  //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+              }
+
+               if (msgarray[q][1].indexOf("iPhone 11") !== -1 && (msgarray[q][1].indexOf("XCZ1") == -1 || msgarray[q][1].indexOf("XCZ1") == -1)){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCiPhone 11"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else  {
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCiPhone 11"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+
+               if (msgarray[q][1].includes("iPhone 8") == true && msgarray[q][1].includes("Plus") == true){
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true || msgarray[q][1].includes("ATEX Zone 2 only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCiPhone 8+"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  else {
+                    msgarray[q].splice(2,0,"Customer will supply")
+                    msgarray[q][1] = "XCiPhone 8+"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+                  
+              }
+//book mark here
+               if (msgarray[q][1].includes("iPhone 8") == true && msgarray[q][1].includes("Plus") == false){
+                
+                 if(msgarray[q][1].includes("ATEX Zone 2 Case Only") == true || msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "XCiPhone 8"
+                    if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
+                        
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }
+                      
+                    //multiordersplit[q].splice(3,1,"N/A")
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+               
+                   if (msgarray[q][1].includes(c1d2installvar1)) {
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-Yes-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "XCiPhone 8"
+                    Logger.log(multiordersplit[q])
+                    if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
+                        
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                      Logger.log(multiordersplit[q])
+                    
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                                    
+                  }
+                  else{
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-Yes-(\D*)/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                  }
+
+
+              }
+
+               if (msgarray[q][1].indexOf("iPhone 7") !== -1 && msgarray[q][1].indexOf("Plus") == -1){
+                
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "XCiPhone 7"
+                    
+                      if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
+                        
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }
+                      Logger.log(multiordersplit[q])
+                    
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                    
+                    
+                  }
+
+                  if(msgarray[q][1].includes(c1d2installvar1)){
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-Yes-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "XCiPhone 7"
+                    
+                      if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
+                        
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                   
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                    
+                    
+                  }
+                  else {
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-Yes-(\D*)/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                  }
+                  
+                  
+              }
+              
+               if (msgarray[q][1].indexOf("iPhone 7") !== -1 && msgarray[q][1].indexOf("Plus") !== -1){
+                
+                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
+                    msgarray[q].splice(2,0,"N/A")
+                    msgarray[q][1] = "XCiPhone 7+"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+
+                  }
+                  else {
+                    //msgarray[q].splice(2,0,"Customer will supply")
+                    //msgarray[q][1] = "XCiPhone 7+"
+                    //msgarray[q].splice(msgarray[q].length-1,1)
+                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  }
+              }
+             
+ 
+
+              
+              q++
+              //16 aka Q
+
+
+
+
+
+
+              }
+}
+}
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
