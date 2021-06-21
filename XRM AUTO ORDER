@@ -1,7 +1,8 @@
 function METHOD2() {
 //"X" = User inputted value
-// ^(.*?)"X"(\D*)
+// ^(.*?)"X"(\D*)\D(.*)
 //multiordersplit[q].splice(3,1,"X") deprecated
+//Figure out .includes with || // work on it at home stopped on iPad Pro 11 2020 at work
 var ss = SpreadsheetApp.getActiveSpreadsheet();
 var datasheet = ss.getSheetByName("Sheet1");
 var datasheet2 = ss.getSheetByName("Sheet2");
@@ -10,6 +11,7 @@ var datasheet4= ss.getSheetByName("Sheet4");
 var multiorder= [];
 var multiordersplit=[];
 var multiordersplitvar2=[];
+var NASPLICE = false;
 
 var query = "from:derek@xciel.com is:unread is:inbox";
 var threads = GmailApp.search(query);
@@ -27,7 +29,8 @@ var zipsplit =[];
 var multiprodcheck = ["iPad mini", "iPad Pro","iPad Air","iPad 10.2", "iPhone 11", "iPhone 11 Pro", 
 "iPhone 11 Pro Max", "iPhone 12", "iPhone XR", "iPhone 7","iPhone 7 Plus", "iPhone Mini 12", "XCiPhone8-A", "XCiPhone8"]
 var c1d2install = "c1d2-certification-required:Yes"
-var c1d2installvar1 = "Yes - Customer will ship device for C1D2 install"
+var c1d2installvar1 = "VCDV"
+var atex = "ZTTZ"
 var column = datasheet.getRange('A:A');
 var r = 0;
 var rowlimit = datasheet.getLastRow();
@@ -36,7 +39,8 @@ var rowlimitclear = rowlimit + 1;
 
 
 
-//datasheet.getDataRange().clearContent();
+datasheet.getDataRange().clearContent();
+datasheet2.getDataRange().clearContent();
 
       for (var i in threads) 
       //for (var i=0; i<threads.length; i++)
@@ -81,6 +85,101 @@ var rowlimitclear = rowlimit + 1;
               .replace(/\s{2,5}/g," ").trim()
              
               msgarray[q] = msg2.split(/\s\s/gm)
+              //XCZ1 mini 5 = XCZMINFIVE    //no i on mini
+              //XCZ1 mini 5 no camera = XCZNOCAMMINFIVE
+              //Same for 4 except its a 4 lol
+
+
+
+             //Expiremental try tomorrow at work
+              msgarray[q][1] = msgarray[q][1].replace(/”/g,"").replace(/"/g,"")
+.replace(/[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s5\s[Cc][Aa][Ss][Ee]\s[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s1\senclosure\sonly\sfor\s[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s5/g,"XCZMINFIVE")
+.replace(/[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s4\s[Cc][Aa][Ss][Ee]\s[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s1\senclosure\sonly\sfor\s[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s4/g,"XCZMINFOUR")
+.replace(/[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s5\s[Cc][Aa][Ss][Ee]\s[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s1\s[Xx][Cc][Zz]1\([Nn][Oo]\s[Cc][Aa][Mm][Ee][Rr][Aa]\)\senclosure\sonly\sfor\s[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s5/g,"XCZNOCAMMINFIVE")
+.replace(/[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s4\s[Cc][Aa][Ss][Ee]\s[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s1\s[\(\s][Nn][Oo]\s[Cc][Aa][Mm][Ee][Rr][Aa]\)\senclosure\sonly\sfor\s[Ii][Pp][Aa][Dd]\s[Mm][Ii][Nn][Ii]\s4/g,"XCZNOCAMMINFOUR")
+                    .replace(/[Ii][Pp][Hh][Oo][Nn]Ee]\s[Xx][Rr]\s[Cc][Aa][Ss][Ee]\s[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s1/g,"XCZONEIPHONEXX")
+                    .replace(/XCZ1/g,"XCZONE")
+                    .replace(/1[Ss][Tt]/g,"FIRST").replace(/2[Nn][Dd]/g,"SECOND").replace(/3[Rr][Dd]/g,"THIRD").replace(/4[Tt][Hh]/g, "FOURTH")
+                    .replace(/5[Tt][Hh]/g,"FIFTH").replace(/6[Tt][Hh]/g,"SIXTH").replace(/7[Tt][Hh]/g,"SEVENTH").replace(/8[Tt][Hh]/g,"EIGTH")
+                    .replace(/9[Tt][Hh]/g,"NINETH").replace(/10[Tt][Hh]/g,"TENETH")
+                    //.replace(/[Pp][Ll][Uu][Ss]/g,"PLUS")
+                    .replace(/[Gg][Ee][Nn][Ee][Rr][Aa][Tt][Ii][Oo][Nn]|[Gg][Ee][Nn]/g,"GEN")
+                    .replace(/-32GB|-32|32GB/g,"THREETWOGIGA").replace(/-64GB|-64|64GB/g,"SIXFOURGIGA").replace(/-128GB|-128|128GB/g,"ONETWOEIGHTGIGA")
+                    .replace(/-256GB|-256|256GB/g,"TWOFIVESIXGIGA").replace(/-512GB|-512|512GB/g,"FIVEONETWOGIGA").replace(/-1TB|1TB/g,"ONETERA")
+                    .replace(/\+\s4[Gg]|\+4[Gg]|-4[Gg]/g,"CELLULAR")
+                    .replace(/10\.2[Ii][Nn]|10\.2/g,"TENTWO").replace(/9\.7[Ii][Nn]|9\.7/g,"NINESEVEN").replace(/10\.5[Ii][Nn]|10\.5/g,"TENFIVE").replace(/10\.9[Ii][Nn]|10\.9/g,"TENNINE")
+                    .replace(/[Mm][Aa][Xx]/g,"MAX")
+                  
+
+                    .replace(/[Aa][Tt][Ee][Xx]\s[Zz][Oo][Nn][Ee]\s2\s[Rr][Aa][Tt][Ii][Nn][Gg]\s[Oo][Nn][Ll][Yy]/g,"ZTTZ")                 
+                    .replace(/c1d2-certification-required:Yes/g,"VCDV")
+                    .replace(/c1d2-certification-required:No/g,"ZTTZ")
+                    .replace(/[Cc][12][Dd]2\/[Cc][12][Dd]2\/[Zz][Oo][Nn][Ee]\s[12]|[Cc][12][Dd]2\/[Zz][Oo][Nn][Ee]\s[12]|[Cc][12][Dd]2/g,"")
+                    .replace(/[Vv]ersions:|[Vv]ersions/g,"")
+                    .replace(/I will buy both the case and the device/g,"WITHDEVICE")
+                    .replace(/I'm buying the device and case/g,"WITHDEVICE")
+                    .replace(/[Ii]ntrinsically [Ss]afe/g,"")
+                    .replace(/[\)\(]/g,"")
+                    .replace(/\s/g,"")
+                    
+
+                    .replace(/isexpectedtosendtheir[Ii][Pp][Aa][Dd]to[Xx][Cc][Ii][Ee][Ll]/g,"VCDV")
+                    .replace(/-[Yy]es-[Cc]ustomerwillshipdeviceforinstall|[Cc]ustomerwillshipthedeviceforinstall|[Cc]ustomerwillshipdeviceforinstall/g,"VCDV") 
+                    .replace(/[-:][Nn][Oo][-:]|[Ww]eshipthetothe[Cc]ase|[Ww]eshiptothe[Cc]ase|[Ww]eshipthe[Cc]ase|[Ww]eship[Cc]asefor|[Ww]eship[Cc]aseto/g,"ZONEDEUX")
+                    .replace(/tothe[Cc]ustomer|for[Ss]elf[Ii]nstall|[Cc]ustomerfor[Ss]elf[Ii]nstall/g,"ZONEDEUX")
+                    
+                    
+                    
+                    
+                    .replace(/supplier:[Xx]ciel/g,"")
+                    .replace(/[Aa][Tt][Ee][Xx][Zz][Oo][Nn][Ee]2[Cc][Aa][Ss][Ee]|[Aa][Tt][Ee][Xx][Cc][Aa][Ss][Ee][Zz][Oo][Nn][Ee]2|[Aa][Tt][Ee][Xx][Zz][Oo][Nn][Ee]2/g,"")
+                    .replace(/[Cc]ase|[Ee]nclosure/g,"")
+                    .replace(/[Oo]nly|[Ff]or/g,"")
+                    .replace(/ZONEDEUXZONEDEUXZONEDEUX|ZONEDEUXZONEDEUX|ZONEDEUX/g,"ZTTZ")
+ 
+                    .replace(/[Aa][Tt][Ee][Xx]/g,"")
+                    .replace(/[-]/g,"")
+                    
+                    .replace(/[Mm][Ii][Cc][Rr][Oo][Ss][Oo][Ff][Tt][Ss][Uu][Rr][Ff][Aa][Cc][Ee][Gg][Oo]|[Ss][Uu][Rr][Ff][Aa][Cc][Ee][Gg][Oo]/g,"XCWINGO")
+                    .replace(/XCWINGO2/g,"XCWINTWO")
+                    .replace(/XCS8[Ss][Aa][Mm][Ss][Uu][Nn][Gg][Gg][Aa][Ll][Aa][Xx][Yy][Ss]8/g,"XCSEIGHT")
+                    .replace(/XCS9|[Ss][Aa][Mm][Ss][Uu][Nn][Gg][Gg][Aa][Ll][Aa][Xx][Yy][Ss]9/g,"XCSNINE")
+                    .replace(/XCS10|[Ss][Aa][Mm][Ss][Uu][Nn][Gg][Gg][Aa][Ll][Aa][Xx][Yy][Ss]10/g,"XCSTEN")
+                    .replace(/[Xx][Cc][Rr][Ii][Pp][Aa][Dd]|[Ii][Pp][Aa][Dd]/g,"XCRIPAD")
+                    .replace(/XCRIPAD[Mm][Ii][Nn][Ii]/g,"XCRIPADMINI")
+                    .replace(/XCRIPADMINI4/g,"XCRIPADMINIFOUR").replace(/XCRIPADMINIFOURFOURTHGEN/g,"XCRIPADMINIFOUR")
+                    .replace(/XCRIPADMINI5/g,"XCRIPADMINIFIVE").replace(/XCRIPADMINIFIVEFIFTHGEN/g,"XCRIPADMINIFIVE")
+                    .replace(/XCRIPAD[Aa][Ii][Rr]/g,"XCRIPADAIR").replace(/XCRIPADAIR10\.5[Ii][Nn]|XCRIPADAIR10\.5/g,"XCRIPADAIRTENFIVE")
+                    .replace(/XCRIPADAIR10\.9[Ii][Nn]|XCRIPADAIR10\.9/g,"XCRIPADAIRTENNINE")
+                    .replace(/XCRIPAD2018/g,"XCRIPADSIXTHGEN").replace(/XCRIPADNINESEVEN/g,"XCRIPADSIXTHGEN")
+                    .replace(/XCRIPAD2020/g,"XCRIPADTENTWOEIGTHGEN")
+                    .replace(/XCRIPAD[Pp][Rr][Oo]/g,"XCRIPADPRO")
+                    .replace(/XCRIPADPRO11[Ii][Nn]|XCRIPADPRO11/g,"XCRIPADPROELEVEN")
+                    .replace(/XCRIPADPROELEVEN2018|XCRIPADPROELEVENFIRST[Gg][Ee][Nn]/g,"XCRIPADPROELEVENONEGEN")
+                    .replace(/XCRIPADPROELEVEN2020|XCRIPADPROELEVENSECOND[Gg][Ee][Nn]/g,"XCRIPADPROELEVENTWOGEN")
+                    .replace(/[Xx][Cc][Ii][Pp][Hh][Oo][Nn][Ee]|[Ii][Pp][Hh][Oo][Nn][Ee]/g,"XCIPHONE")
+                    .replace(/XCIPHONE5/g,"XCIPHONEFIVE")
+                    .replace(/XCIPHONE6[Pp][Ll][Uu][Ss]/g,"XCIPHONEPLUSSIX").replace(/XCIPHONE6/g,"XCIPHONESIX")
+                    .replace(/XCIPHONE7[Pp][Ll][Uu][Ss]/g,"XCIPHONEPLUSSEVEN").replace(/XCIPHONE7/g,"XCIPHONESEVEN")
+                    .replace(/XCIPHONE8[Pp][Ll][Uu][Ss]/g,"XCIPHONEPLUSEIGHT").replace(/XCIPHONE8/g,"XCIPHONEEIGHT")
+                    .replace(/XCIPHONE12/g,"XCIPHONETWELVE").replace(/XCIPHONE[Mm][Ii][Nn][Ii]12|XCIPHONETWELVE[Mm][Ii][Nn][Ii]/g,"XCIPHONEMINITWELVE")
+                    .replace(/XCIPHONE11/g,"XCIPHONEELEVEN").replace(/XCIPHONEELEVEN[Pp][Rr][Oo]/g,"XCIPHONEPROELEVEN").replace(/XCIPHONEPROELEVEN[Mm][Aa][Xx]/g,"XCIPHONEMAXPROELEVEN")
+                    .replace(/XCIPHONEXS/g,"XCIPHONESX").replace(/XCIPHONESX[Mm][Aa][Xx]/g,"XCIPHONEMAXSX")
+                    .replace(/XCIPHONEXR/g,"XCIPHONERX").replace(/XCIPHONEX/g,"XCIPHONEEX")
+                    
+                    .replace(/VCDVWITHDEVICE/g,"WITD")
+                    .replace(/\./g,"")
+                    .replace(/options:/g,"")
+                    .replace(/[Cc]ustomer/g,"")
+                    .replace(/[Xx][Cc][Ii][Ee][Ll]/g,"")
+
+
+
+                 
+              datasheet2.appendRow(msgarray[q])
+              
+            
+
               multiordersplit[q] = msg2.split(/\s\s/gm)
               msgarrayad[q]= msg.split(/\n/gm)
              
@@ -89,158 +188,59 @@ var rowlimitclear = rowlimit + 1;
               msgarrayadlength = msgarrayad[q].length
 
               
-              
-              
-              //var order = msgarray[q][1].slice(0,-1)
-             //Logger.log(order)
-             
-              //var elelength = msgarray[q][1].length
-              //var itemdescrip = msgarray[q][1]
-              //var qty = itemdescrip.substring(elelength - 1) // remove everything but the last item
-              //msgarray[q].splice(1, 1, order)
-              //msgarray[q].splice(2, 2, qty)
+      
             
               
         
               
               
               for (i=0;i < msgarrayadlength;i++){ // loop it until the below conditions are met
-
-                
-
-               
-               
                 if (msgarrayad[q][0] == 0 && msgarrayad[q].length >= 5) //Fat trimmer, eats blank front rows unitl 5. Dont be stupid array.length starts at 1 when arrays[] start at 0
                 {  
                 msgarrayad[q].splice(0,1) 
                 }
-                // important top and bottom, connected
                  if (msgarrayad[q][0] == 0 && msgarrayad[q].length == 4) //(company == attn) this needs to go below the fat trimmer or else it will never see it
                 { 
-                //Logger.log(msgarrayad[q][0])
                 msgarrayad[q][0] = msgarrayad[q][1]
-                //msgarray[q].push(msgarrayad[q])
-                
                 }
-
-                
-                
-
-
-
-
-
-
                 if (msgarrayad[q] !== 0 && msgarrayad[q].length == 4)
                 {
                 zipsplit[q] = msgarrayad[q][3].split(/\s/gm)
-                
-                //Logger.log(!Number(zipsplit[q][zipsplit[q].length-1]))
-
-              
-                  
-
-
-
-
                   if (zipsplit[q].length == 5 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 3 word city converter with zip
                   {
                     zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
-                    
                     zipsplit[q].splice(1,2)
-                    //zipsplit[q].splice(1,1)
-                    //zipsplit[q].splice(3,1)
-                    //Logger.log(zipsplit[q])
-
                   }
-
                   if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 3 word city converter NO zip
                   {
                     zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
                     zipsplit[q].splice(1,2)
-                    //zipsplit[q].splice(1,1)
-                    //zipsplit[q].splice(3,1)
                     zipsplit[q].push("MISSING ZIP")
-                    //Logger.log(zipsplit[q])
-
                   }
-
-
                   if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 2 word city converter with zip
                   {
                     var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
                     zipsplit[q].splice(0,2,combinetwoname)
-                    //let removecomma = zipsplit[q][0]
-                    
-                    //zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1)
-                    
-                      
-                      //msgarrayad[q].splice(3,1)
-                      //msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
-                    //Logger.log(zipsplit[q])
-
                   }
-
                   if (zipsplit[q].length == 3 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true) && !zipsplit[q][zipsplit[q].length-1].includes("-") && 
                   zipsplit[q][zipsplit[q].length-1] !=="MISSING ZIP") // 2 word city converter NO zip
                   {
-                    
-                    //Logger.log(zipsplit[q][zipsplit[q].length-1].includes("-"))
                     var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
                     zipsplit[q].splice(0,2,combinetwoname)
                     zipsplit[q].push("MISSING ZIP")
-                    //let removecomma = zipsplit[q][0]
-                    
-                    //zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1)
-                    
-                      
-                      //msgarrayad[q].splice(3,1)
-                      //msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
-                    
-                    
-
                   }
-
                   if (zipsplit[q].length == 2 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 1 WORD CITY NO ZIP // 00000 SAFETY CATCH IS REDUNDANT
                   {
                     zipsplit[q].push("MISSING ZIP")
-                    //Logger.log(zipsplit[q])
-
                   }
-
-                  
-
-
-
-
-
-
-
                   if (zipsplit[q].length == 3)
                   {
-                    
                     let removecomma = zipsplit[q][0]
                     zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1) // might be a more efficent method than the original
                     msgarrayad[q].splice(3,1)
                     msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
-                    
-                    //Logger.log(msgarrayad[q])
-
-                    
-                    
                   }
-                  
-                
-                  
-                 
                 }
-                
-
-                  
-          
-
-            
-
               }
               // convert 5 lines, coded this outside the fat trimmer prob going to regret later ngl
               let zipsplit2 = []
@@ -251,144 +251,2419 @@ var rowlimitclear = rowlimit + 1;
                 {
                   zipsplit2[q][0] = zipsplit2[q][0] + " " + zipsplit2[q][1]
                   zipsplit2[q].splice(1,1)
-                  //Logger.log(zipsplit2[q])
                 }
-
                 let removecomma = zipsplit2[q][0]
                 zipsplit2[q][0] = removecomma.substring(zipsplit2[q][0].length -1,-1) // might be a more efficent method than the original
                 msgarrayad[q][2] = msgarrayad[q][2]+ " " + msgarrayad[q][3]
                 msgarrayad[q].splice(3,1)
                 msgarrayad[q].splice(msgarrayad[q].length-1, 1)
                 msgarrayad[q].push(zipsplit2[q][0], zipsplit2[q][1], zipsplit2[q][2])
+              }
+////////////////////////////////////////////////// Check whether to splice or add \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (multiordersplit[q][3] == 0 || 
+                  multiordersplit[q][3].includes("N/A") || 
+                  multiordersplit[q][3].includes("Customer will supply")||
+                  multiordersplit[q][3].includes("iPad")|| 
+                  multiordersplit[q][3].includes("iPhone") || 
+                  multiordersplit[q][3].includes("Surface")||
+                  multiordersplit[q][3].includes("Samsung S"))
+                  {
+                    NASPLICE = true
+                  }
+                    else
+                  {
+                    NASPLICE = false
+                  }
+////////////////////////////////////////////////////////// END PROD \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+////////////////////////////////////////////////////////// Surface Go Two \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCWINTWO"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCWINTWOA") || 
+                    msgarray[q][1].includes("XCWINTWO"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCWINTWOZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCWin Go 2"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCWINTWO"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCWINTWOVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCWin Go 2" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(
+                    msgarray[q][1].includes("XCWINTWOWITD") // converted 5th gen into just XCRIPADMINIFIVE
+                    )
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCWINTWOWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCWin Go 2"
+                    if(msgarray[q][1].includes("XCWINTWOSIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"Surface Go 2 64GB")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"Surface Go 2 64GB")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCWINTWOTWOFIVESIXGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"Surface Go 2 256GB")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"Surface Go 2 256GB")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    }
+              if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED WIN GO 2" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// Surface Go One \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCWINGO"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCWINGOA") || msgarray[q][1].includes("XCWINGO"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCWINGOZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCWin Go"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                  }
+                  if(msgarray[q][1].includes("XCWINGO"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCWINGOVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCWin Go" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                  }
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED WIN GO 1" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCZ1 mini 5 with NO CAM\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCZMINFIVE") || msgarray[q][1].includes("XCZNOCAMMINFIVE"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCZNOCAMMINFIVE"))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCZNOCAMMINFIVEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCZ1 mini 5 NO CAM MANUAL VERIFICATION"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCZMINFIVE"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCZMINFIVEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCZ1 mini 5" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(
+                    msgarray[q][1].includes("XCZMINFIVEWITD") // converted 5th gen into just XCRIPADMINIFIVE
+                    )
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCZMINFIVEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCZ1 mini 5"
+                    if(msgarray[q][1].includes("XCZMINFIVESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad mini 5 64GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad mini 5 64GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCZMINFIVETWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad mini 5 256GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad mini 5 256GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCZMINFIVESIXFOURGIGA") && !msgarray[q][1].includes("XCZMINFIVESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad mini 5 64GB")
+                        }  
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad mini 5 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCZMINFIVETWOFIVESIXGIGA") && !msgarray[q][1].includes("XCZMINFIVETWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true) 
+                        {      
+                          multiordersplit[q].splice(3,1,"iPad mini 5 256GB")
+                        }
+                      else
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad mini 5 256GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
                 
-                    
+                    }
+              if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED XCZ1 5" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCZ1 mini 4 with NO CAM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCZMINFOUR") || msgarray[q][1].includes("XCZNOCAMMINFOUR"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCZNOCAMMINFOUR"))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCZNOCAMMINFOURVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCZ1 mini 4 NO CAM MANUAL VERIFICATION"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCZMINFOUR"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCZMINFOURVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCZ1 mini 4" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED XCZ1 4" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+              }
+////////////////////////////////////////////////////////// XCRiPad mini 5 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCRIPADMINIFIVE"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADMINIFIVEA") || 
+                    msgarray[q][1].includes("XCRIPADMINIFIVE"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADMINIFIVEZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad mini 5"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCRIPADMINIFIVE"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADMINIFIVEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad mini 5" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(
+                    msgarray[q][1].includes("XCRIPADMINIFIVEWITD") // converted 5th gen into just XCRIPADMINIFIVE
+                    )
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADMINIFIVEFIFTHGENWITD(\D*)/g,"")
+                    .replace(/^(.*?)XCRIPADMINIFIVEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad mini 5"
+                    if(msgarray[q][1].includes("XCRIPADMINIFIVESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad mini 5 64GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad mini 5 64GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADMINIFIVETWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad mini 5 256GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad mini 5 256GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADMINIFIVESIXFOURGIGA") && !msgarray[q][1].includes("XCRIPADMINIFIVESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad mini 5 64GB")
+                        }  
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad mini 5 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADMINIFIVETWOFIVESIXGIGA") && !msgarray[q][1].includes("XCRIPADMINIFIVETWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true) 
+                        {      
+                          multiordersplit[q].splice(3,1,"iPad mini 5 256GB")
+                        }
+                      else
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad mini 5 256GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
                 
-
-
-                //Logger.log(msgarrayad[q][3])
-                //Logger.log(msgarrayad[q])
-                //Logger.log(zipsplit2[q])
-              }
-           
-
-              
-              //msgarray[q].concat(msgarrayad[q])
-              //datasheet.appendRow(msgarrayad[q])   //this will output
-              
-
-              if (msgarray[q][1].includes("iPad Air 10.9") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCRiPad Air 10.9"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  
-                   // datasheet.appendRow(msgarrayad[q])
-
-                  }
-                  else if (msgarray[q][1].includes(c1d2install)) {
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCRiPad Air 10.9"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  }
-                  else {
-                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
-                    msgarray[q][1] = "XCRiPad Air 10.9"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                    }
+              if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED iPad mini 5" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
                   }
               }
-
-               if (msgarray[q][1].includes("iPad 10.2") == true && msgarray[q][1].includes("8th gen") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-
+////////////////////////////////////////////////////////// XCRiPad mini 4 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCRIPADMINIFOUR"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADMINIFOURA") || msgarray[q][1].includes("XCRIPADMINIFOUR"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADMINIFOURZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad mini 4"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
                   }
-                  else if (msgarray[q][1].includes(c1d2install)){
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  if(msgarray[q][1].includes("XCRIPADMINIFOUR"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADMINIFOURVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad mini 4" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
                   }
-                  else{
-                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
-                    msgarray[q][1] = "XCRiPad 10.2 8th gen"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED iPad mini 4" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
                   }
               }
-
-               if (msgarray[q][1].includes("iPad 10.2") ==true && msgarray[q][1].includes("7th gen") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCRiPad 10.2"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-
-                  }
-                  else if(msgarray[q][1].includes(c1d2install)){
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCRiPad 10.2"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  }
-                  else {
-                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
-                    msgarray[q][1] = "XCRiPad 10.2"
-                    msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+////////////////////////////////////////////////////////// XCRiPad 10.2 2020 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ verified
+              if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGEN"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENA") || 
+                    msgarray[q][1].includes("XCRIPADTENTWOEIGTHGEN"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADTENTWOEIGTHGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad 10.2 8th gen"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADTENTWOEIGTHGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad 10.2 8th gen" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(
+                    msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENWITD") || 
+                    msgarray[q][1].includes("XCRIPADTENTWOWITD")
+                    )
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADTENTWOEIGTHGENWITD(\D*)/g,"")
+                    .replace(/^(.*?)XCRIPADTENTWOWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad 10.2 8th gen"
+                    if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENTHREETWOGIGACELLULAR") || msgarray[q][1].includes("XCRIPADTENTWOTHREETWOGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad 10.2 8th gen 32GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad 10.2 8th gen 32GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENONETWOEIGHTGIGACELLULAR") || msgarray[q][1].includes("XCRIPADTENTWOONETWOEIGHTGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad 10.2 8th gen 128GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad 10.2 8th gen 128GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENTHREETWOGIGA") || msgarray[q][1].includes("XCRIPADTENTWOTHREETWOGIGA")&&
+                      !msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENTHREETWOGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADTENTWOTHREETWOGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad 10.2 8th gen 32GB")
+                        }  
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad 10.2 8th gen 32GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENONETWOEIGHTGIGA") || msgarray[q][1].includes("XCRIPADTENTWOONETWOEIGHTGIGA") &&
+                      !msgarray[q][1].includes("XCRIPADTENTWOEIGTHGENONETWOEIGHTGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADTENTWOONETWOEIGHTGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true) 
+                        {      
+                          multiordersplit[q].splice(3,1,"iPad 10.2 8th gen 128GB")
+                        }
+                      else
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad 10.2 8th gen 128GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                
+                    }
+              if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPAD 10.2" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
                   }
               }
-
-                if (msgarray[q][1].includes("iPad Pro 11") == true && msgarray[q][1].includes("2nd Gen") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCRiPad Pro 11 2020"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-
+////////////////////////////////////////////////////////// XCRiPad 10.2 1st gen \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ verified
+              if(msgarray[q][1].includes("XCRIPADTENTWOSEVENTHGEN"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADTENTWOSEVENTHGENA") || msgarray[q][1].includes("XCRIPADTENTWOSEVENTHGEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADTENTWOSEVENTHGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad 10.2"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
                   }
-                  else if (msgarray[q][1].includes(c1d2install)){
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCRiPad Pro 11 2020"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  if(msgarray[q][1].includes("XCRIPADTENTWOSEVENTHGEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADTENTWOSEVENTHGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad 10.2" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
                   }
-                  else{
-                    msgarray[q].splice(2,0,"VERIFICATION ERROR")
-                    msgarray[q][1] = "XCRiPad Pro 11 2020"
-                    msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPAD 7 GEN" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCRIPAD 2018 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ verified
+              if(msgarray[q][1].includes("XCRIPADSIXTHGEN"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADSIXTHGENA") || msgarray[q][1].includes("XCRIPADSIXTHGEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADSIXTHGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad 2018"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                  }
+                  if(msgarray[q][1].includes("XCRIPADSIXTHGEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADSIXTHGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad 2018" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                  }
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPAD 2018" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCRiPad Pro 11" 2020 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ verified
+              if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGEN"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENA") || msgarray[q][1].includes("XCRIPADPROELEVENTWOGEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADPROELEVENTWOGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Pro 11 2020"                   
+                      if (NASPLICE = true)
+                        {                 
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                  }
+                  if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADPROELEVENTWOGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad Pro 11 2020" 
+                      if (NASPLICE = true)
+                        { 
+                          multiordersplit[q].splice(3,1,"Customer will supply")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"Customer will supply")
+                        }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                  }
+                  if((msgarray[q][1].includes("XCRIPADPROELEVENTWOGENWITD") || msgarray[q][1].includes("XCRIPADPROELEVENWITD")))
+                  {
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADPROELEVENTWOGENWITD(\D*)/g,"")
+                    .replace(/^(.*?)XCRIPADPROELEVENWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Pro 11 2020"
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETERACELLULAR")|| msgarray[q][1].includes("XCRIPADPROELEVENONETERACELLULAR")) 
+                    {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad Pro 11 1TB + 4G")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Pro 11 1TB + 4G")
+                        }
+                        err = true
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENFIVEONETWOGIGACELLULAR") || msgarray[q][1].includes("XCRIPADPROELEVENFIVEONETWOGIGACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad Pro 11 512GB + 4G")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Pro 11 512GB + 4G")
+                        }
+                        err = true
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENTWOFIVESIXGIGACELLULAR") || msgarray[q][1].includes("XCRIPADPROELEVENTWOFIVESIXGIGACELLULAR")) 
+                    { 
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad Pro 11 256GB + 4G")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Pro 11 256GB + 4G")
+                        }
+                        err = true
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETWOEIGHTGIGACELLULAR")|| msgarray[q][1].includes("XCRIPADPROELEVENONETWOEIGHTGIGACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad Pro 11 128GB + 4G")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Pro 11 128GB + 4G")
+                        }
+                        err = true
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETERA") || msgarray[q][1].includes("XCRIPADPROELEVENONETERA")&&
+                    !msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETERACELLULAR") && !msgarray[q][1].includes("XCRIPADPROELEVENONETERACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"iPad Pro 11 1TB")
+                      }  
+                      else 
+                      { 
+                        multiordersplit[q].splice(3,0,"iPad Pro 11 1TB")
+                      }
+                      err = true
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENFIVEONETWOGIGA") || msgarray[q][1].includes("XCRIPADPROELEVENFIVEONETWOGIGA")&&
+                    !msgarray[q][1].includes("XCRIPADPROELEVENTWOGENFIVEONETWOGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADPROELEVENFIVEONETWOGIGACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"iPad Pro 11 512GB")
+                      }
+                      else 
+                      { 
+                        multiordersplit[q].splice(3,0,"iPad Pro 11 512GB")
+                      }
+                      err = true
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCRIPADPROELEVENTWOGENTWOFIVESIXGIGA") || msgarray[q][1].includes("XCRIPADPROELEVENTWOFIVESIXGIGA")&&
+                    !msgarray[q][1].includes("XCRIPADPROELEVENTWOGENTWOFIVESIXGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADPROELEVENTWOFIVESIXGIGACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"iPad Pro 11 256GB")
+                      }
+                      else 
+                      { 
+                        multiordersplit[q].splice(3,0,"iPad Pro 11 256GB")
+                      }
+                      err = true
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if (msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETWOEIGHTGIGA") || msgarray[q][1].includes("XCRIPADPROELEVENONETWOEIGHTGIGA")&&
+                    !msgarray[q][1].includes("XCRIPADPROELEVENTWOGENONETWOEIGHTGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADPROELEVENONETWOEIGHTGIGACELLULAR"))
+                    {
+                      if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"iPad Pro 11 128GB")
+                      }
+                      else 
+                      { 
+                        multiordersplit[q].splice(3,0,"iPad Pro 11 128GB")
+                      }
+                      err = true
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  }
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPAD PRO 11" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCRiPad Pro 11 2018 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ verified
+              if(msgarray[q][1].includes("XCRIPADPROELEVENONEGEN"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADPROELEVENONEGENA") || msgarray[q][1].includes("XCRIPADPROELEVENONEGEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADPROELEVENONEGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Pro 11"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                  }
+                  if(msgarray[q][1].includes("XCRIPADPROELEVENONEGEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADPROELEVENONEGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad Pro 11" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                  }
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPAD PRO 11 1GEN" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// XCRiPad Air 10.9 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ stopped here finish rest at work
+                if(msgarray[q][1].includes("XCRIPADAIRTENNINE"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENA") || 
+                    msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGEN"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADAIRTENNINEFOURTHGENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Air 10.9"  
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADAIRTENNINEFOURTHGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad Air 10.9" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(
+                    msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENWITD") || 
+                    msgarray[q][1].includes("XCRIPADAIRTENNINEWITD")       // this is fine
+                    )
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADAIRTENNINEFOURTHGENWITD(\D*)/g,"")
+                    .replace(/^(.*?)XCRIPADAIRTENNINEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Air 10.9"
+                    if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENSIXFOURGIGACELLULAR") || msgarray[q][1].includes("XCRIPADAIRTENNINESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad Air 10.9 64GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Air 10.9 64GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENTWOFIVESIXGIGACELLULAR") || msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENTWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                        multiordersplit[q].splice(3,1,"iPad Air 10.9 256GB + 4G")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPad Air 10.9 256GB + 4G")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENSIXFOURGIGA") || msgarray[q][1].includes("XCRIPADAIRTENNINESIXFOURGIGA") &&
+                      !msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENSIXFOURGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADAIRTENNINESIXFOURGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPad Air 10.9 64GB")
+                        }  
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad Air 10.9 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENTWOFIVESIXGIGA") || msgarray[q][1].includes("XCRIPADAIRTENNINETWOFIVESIXGIGA") &&
+                      !msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENTWOFIVESIXGIGACELLULAR") && !msgarray[q][1].includes("XCRIPADAIRTENNINEFOURTHGENTWOFIVESIXGIGACELLULAR"))
+                      {
+                      if (NASPLICE = true) 
+                        {      
+                          multiordersplit[q].splice(3,1,"iPad Air 10.9 256GB")
+                        }
+                      else
+                        { 
+                          multiordersplit[q].splice(3,0,"iPad Air 10.9 256GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED AIR 10.9" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// XCRiPad Air 10.5 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if(msgarray[q][1].includes("XCRIPADAIRTENFIVE"))
+              {
+                let err = false
+                  if(msgarray[q][1].includes("XCRIPADAIRTENFIVEA") || msgarray[q][1].includes("XCRIPADAIRTENFIVETHIRDGEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADAIRTENFIVETHIRDGENZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCRIPADAIRTENFIVEAZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCRiPad Air 10.5"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                  }
+                  if(msgarray[q][1].includes("XCRIPADAIRTENFIVETHIRDGEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCRIPADAIRTENFIVETHIRDGENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCRiPad Air 10.5" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                  }
+                  if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED AIR TENFIVE" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+//////////////// MAJOR LOGIC CHANGE I NEED TO UPDATE BELOW //////////
+////////////////////////////////////////////////////////// XCZ1 Phone Place holder \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCZONEIPHONEXX"))
+              {
+                let temphold = msgarray[q][1]
+                multiordersplit[q][1] = temphold
+                multiordersplit[q][2] = "MANUAL ENTRY REQUIRED"
+                multiordersplit[q][1] = "XCZ1 iPhone"
+                if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"MANUAL ENTRY REQUIRED")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"MANUAL ENTRY REQUIRED")
+                      }                
+                datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+              }
+////////////////////////////////////////////////////////// XCiPhone 12 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCIPHONETWELVE"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCIPHONETWELVEA") || msgarray[q][1].includes("XCIPHONETWELVE"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONETWELVEZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone 12"                   
+                    if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                    else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }             
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))              
+                    }
+                  if(msgarray[q][1].includes("XCIPHONETWELVE"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONETWELVEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"") 
+                    multiordersplit[q][1] = "XCiPhone 12" 
+                    if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                    else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }        
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q])) 
+                    }
+                  if(msgarray[q][1].includes("XCIPHONETWELVEWITD"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONETWELVEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone 12"   
+                    if(msgarray[q][1].includes("XCIPHONETWELVESIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 12 64GB")
+                        }
+                      else 
+                        {  
+                          multiordersplit[q].splice(3,0,"iPhone 12 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONETWELVEONETWOEIGHTGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {      
+                          multiordersplit[q].splice(3,1,"iPhone 12 128GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 12 128GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONETWELVETWOFIVESIXGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 12 256GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 12 256GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                      }
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED iPhone 12" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }  
+               }
+////////////////////////////////////////////////////////// XCiPhone 12 mini \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCIPHONEMINITWELVE"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONEMINITWELVEA") || msgarray[q][1].includes("XCIPHONEMINITWELVE"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMINITWELVEZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone 12 mini"                   
+                    if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                    else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))               
+                    }
+                  if(msgarray[q][1].includes("XCIPHONEMINITWELVE"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMINITWELVEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 12 mini" 
+                    if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  if(msgarray[q][1].includes("XCIPHONEMINITWELVEWITD"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMINITWELVEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone 12 mini"   
+                    if(msgarray[q][1].includes("XCIPHONEMINITWELVESIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {      
+                          multiordersplit[q].splice(3,1,"iPhone 12 mini 64GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 12 mini 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONEMINITWELVEONETWOEIGHTGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {      
+                          multiordersplit[q].splice(3,1,"iPhone 12 mini 128GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 12 mini 128GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONEMINITWELVETWOFIVESIXGIGA")){
+                      if (multiordersplit[q][3] == 0 || multiordersplit[q][3].includes("N/A","Customer will supply","iPad","iPhone","Surface","Samsung S")){      
+                        multiordersplit[q].splice(3,1,"iPhone 12 mini 256GB")
+                      }
+                      else { 
+                        multiordersplit[q].splice(3,0,"iPhone 12 mini 256GB")
+                      }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                    }
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED iPhone 12 MINI" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }  
+              }
+////////////////////////////////////////////////////////// XCiPhone SE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if(msgarray[q][1].includes("XCIPHONESE"))
+                {
+                let err = false
+                  if(msgarray[q][1].includes("XCIPHONESEA") || msgarray[q][1].includes("XCIPHONESE"+atex))
+                    { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESEZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone SE"     
+                      if (NASPLICE = true)
+                        {                 
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))               
+                    }
+                  if(msgarray[q][1].includes("XCIPHONESE"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone SE" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  if(msgarray[q][1].includes("XCIPHONESEWITD"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESEWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone SE"
+                    if(msgarray[q][1].includes("XCIPHONESETWOFIVESIXGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 256GB")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPhone 256GB")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONESEONETWOEIGHTGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 128GB")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPhone 128GB")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONESESIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 64GB")
+                        }
+                        else
+                        {
+                          multiordersplit[q].splice(3,0,"iPhone 64GB")
+                        }
+                        datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONESE" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+               }
+////////////////////////////////////////////////////////// XCiPhone 11 Pro Max \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if (msgarray[q][1].includes("XCIPHONEMAXPROELEVEN"))
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCIPHONEMAXPROELEVENA") || msgarray[q][1].includes("XCIPHONEMAXPROELEVEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMAXPROELEVENZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONEMAXPROELEVENA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11 Pro Max"                   
+                      if (NASPLICE = true)
+                        {                 
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))               
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEMAXPROELEVEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMAXPROELEVENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11 Pro Max" 
+                      if (NASPLICE = true)
+                        { 
+                          multiordersplit[q].splice(3,1,"Customer will supply")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"Customer will supply")
+                        }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE11PROMAX" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// XCiPhone 11 Pro \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing
+              if (msgarray[q][1].includes("XCIPHONEPROELEVEN"))
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCIPHONEPROELEVENA") || msgarray[q][1].includes("XCIPHONEPROELEVEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPROELEVENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11 Pro"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))               
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEPROELEVEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPROELEVENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11 Pro" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE11PRO" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  }
+////////////////////////////////////////////////////////// XCiPhone 11 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ updated needs testing messed around with indexOf
+              if (msgarray[q][1].indexOf("XCIPHONEELEVEN") !== -1)
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCIPHONEELEVENA") || msgarray[q][1].includes("XCIPHONEELEVEN"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEELEVENZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11"                   
+                      if (NASPLICE = true)
+                        {                 
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))               
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEELEVEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEELEVENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 11" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                  if(msgarray[q][1].includes("XCIPHONEELEVENWITD"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEELEVENWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone 11"   
+                    if(msgarray[q][1].includes("XCIPHONEELEVENSIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {      
+                          multiordersplit[q].splice(3,1,"iPhone 11 64GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 11 64GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONEELEVENONETWOEIGHTGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 11 128GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 11 128GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    if(msgarray[q][1].includes("XCIPHONEELEVENTWOFIVESIXGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone 11 256GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone 11 256GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                      }
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE11" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// XCiPhone XS Max \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCIPHONEMAXSX"))
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCIPHONEMAXSXA") || msgarray[q][1].includes("XCIPHONEMAXSX"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMAXSXZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone XS Max"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEMAXSX"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEMAXSXVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone XS Max" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                    if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE MAXSX" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// XCiPhone XS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCIPHONESX") == true)
+              {
+                let err = false
+                if(msgarray[q][1].includes("XCIPHONESXA") || msgarray[q][1].includes("XCIPHONESX"+atex))
+                  { 
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESXZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONESXA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone XS"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                  if(msgarray[q][1].includes("XCIPHONESX"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESXVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone XS" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE XS" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    } 
+              }
+////////////////////////////////////////////////////////// iPhone XR \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCIPHONERX"))
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCiPhoneRXA") || msgarray[q][1].includes("XCIPHONERX"+atex))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONERXZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONERXA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone XR"                   
+                      if (NASPLICE = true)
+                        {                 
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                  if(msgarray[q][1].includes("XCIPHONERX"+c1d2installvar1))
+                    {
+                      err = true
+                      let temphold = msgarray[q][1]
+                      multiordersplit[q][1] = temphold
+                      multiordersplit[q][2] = ""
+                      multiordersplit[q][2] = multiordersplit[q][1]
+                      .replace(/^(.*?)XCIPHONERXVCDV(\D*)/g,"")
+                      .replace(/\D(.*)/g,"")
+                      multiordersplit[q][1] = "XCiPhone XR" 
+                        if (NASPLICE = true)
+                          { 
+                            multiordersplit[q].splice(3,1,"Customer will supply")
+                          }
+                        else
+                          {
+                            multiordersplit[q].splice(3,0,"Customer will supply")
+                          }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                  if(msgarray[q][1].includes("XCIPHONERXWITD"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONERXWITD(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")    
+                    multiordersplit[q][1] = "XCiPhone XR"   
+                    if(msgarray[q][1].includes("XCIPHONERXSIXFOURGIGA"))
+                      {
+                      if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"iPhone XR 64GB")
+                      }
+                      else
+                      { 
+                        multiordersplit[q].splice(3,0,"iPhone XR 64GB")
+                      }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                    if(msgarray[q][1].includes("XCIPHONERXONETWOEIGHTGIGA"))
+                      {
+                      if (NASPLICE = true)
+                        {
+                          multiordersplit[q].splice(3,1,"iPhone XR 128GB")
+                        }
+                      else 
+                        { 
+                          multiordersplit[q].splice(3,0,"iPhone XR 128GB")
+                        }
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                      }
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE XR" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// iPhone X \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\              
+              if (msgarray[q][1].includes("XCIPHONEEX"))
+                {
+                  let err = false
+                if(msgarray[q][1].includes("XCIPHONEEX"+atex) || msgarray[q][1].includes("XCIPHONEEXA"))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEEXZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONEEXA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone X"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEEX"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEEXVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone X" 
+                      if (NASPLICE = true)
+                        { 
+                          multiordersplit[q].splice(3,1,"Customer will supply")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"Customer will supply")
+                        }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE X" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }
+                }
+////////////////////////////////////////////////////////// iPhone 8 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+               if (msgarray[q][1].includes("XCIPHONEEIGHT"))
+                {
+                  let err = false
+                 if(msgarray[q][1].includes("XCIPHONEEIGHT"+atex) || msgarray[q][1].includes("XCIPHONEEIGHTA"))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEEIGHTZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONEEIGHTA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 8"
+                    if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+                  if (msgarray[q][1].includes("XCIPHONEEIGHT"+c1d2installvar1)) 
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEEIGHTVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 8"
+                    if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }                   
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                                    
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPHONE 8" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+              }
+////////////////////////////////////////////////////////// iPhone 8+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+               if (msgarray[q][1].includes("XCIPHONEPLUSEIGHT"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONEPLUSEIGHT"+atex) || msgarray[q][1].includes("XCIPHONEPLUSEIGHTA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSEIGHTZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONEPLUSEIGHTA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 8+"                   
+                      if (NASPLICE = true)
+                      {                 
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                  if(msgarray[q][1].includes("XCIPHONEPLUSEIGHT"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSEIGHTVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 8+" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                  if(err = false)
+                    {
+                      multiordersplit[q][2] = "ERROR DETECTED"
+                      multiordersplit[q][1] = "ERROR DETECTED IPHONE 8+" 
+                      datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                    }                  
+               }
+////////////////////////////////////////////////////////// iPhone 7 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+               if (msgarray[q][1].indexOf("XCIPHONESEVEN") !== -1)
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONESEVEN"+atex) || msgarray[q][1].includes("XCIPHONESEVENA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESEVENZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONESEVENA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 7"                   
+                      if (NASPLICE = true)
+                      {
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                    }
+                  if(msgarray[q][1].includes("XCIPHONESEVEN"+c1d2installvar1))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESEVENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 7" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPHONE 7" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }              
+                }
+////////////////////////////////////////////////////////// iPhone 7+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\             
+               if (msgarray[q][1].indexOf("XCIPHONEPLUSSEVEN") !== -1)
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONEPLUSSEVEN"+atex) || msgarray[q][1].includes("XCIPHONEPLUSSEVENA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSSEVENZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONEPLUSSEVENA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 7+"                   
+                      if (NASPLICE = true)
+                        {                       
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                    }
+                 if(msgarray[q][1].includes("XCIPHONEPLUSSEVEN"+c1d2installvar1))
+                   {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSSEVENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 7+" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                    }
+              if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPHONE 7 PLUS" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }   
+              }
+////////////////////////////////////////////////////////// iPhone 6 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCIPHONESIX")) 
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONESIX"+atex) || msgarray[q][1].includes("XCIPHONESIXA"))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESIXZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCIPHONESIXA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 6"                   
+                      if (NASPLICE = true)
+                        {                       
+                          multiordersplit[q].splice(3,1,"N/A")
+                        }
+                      else
+                        {
+                          multiordersplit[q].splice(3,0,"N/A")
+                        }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                 if(msgarray[q][1].includes("XCIPHONESIX"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONESIXVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 6" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPHONE6" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
                   }
                 }
-// BOOKMARK //
-               if (msgarray[q][1].includes("iPad Pro 9.7") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCRiPad Pro 9.7"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-
+////////////////////////////////////////////////////////// iPhone 6+ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCIPHONEPLUSSIX"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCIPHONEPLUSSIX"+atex) || msgarray[q][1].includes("XCIPHONEPLUSSIXA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSSIXZTTZ(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 6+"                   
+                      if (NASPLICE = true)
+                      {                       
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
                   }
+                 if(msgarray[q][1].includes("XCIPHONEPLUSSIX"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCIPHONEPLUSSIXVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCiPhone 6+" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED IPHONE6plus" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+                }
+////////////////////////////////////////////////////////// Samsung S10 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCSTEN"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCSTEN"+atex) || msgarray[q][1].includes("XCSTENA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSTENZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCSTENA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS10"                   
+                      if (NASPLICE = true)
+                      {                       
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                  }
+                 if(msgarray[q][1].includes("XCSTEN"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSTENVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS10" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED XCS10" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+                }
+////////////////////////////////////////////////////////// Samsung S9 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCSNINE"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCSNINE"+atex) || msgarray[q][1].includes("XCSNINEA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSNINEZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCSNINEA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS9"                   
+                      if (NASPLICE = true)
+                      {                       
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                    }
+                 if(msgarray[q][1].includes("XCSNINE"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSNINEVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS9" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED XCS9" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+                }
+////////////////////////////////////////////////////////// Samsung S8 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              if (msgarray[q][1].includes("XCSEIGHT"))
+                {
+                  let err = false
+                  if(msgarray[q][1].includes("XCSEIGHT"+atex) || msgarray[q][1].includes("XCSEIGHTA"))
+                    {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSEIGHTZTTZ(\D*)/g,"")
+                    .replace(/^(.*?)XCSEIGHTA(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS8"                   
+                      if (NASPLICE = true)
+                      {                       
+                        multiordersplit[q].splice(3,1,"N/A")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"N/A")
+                      }                
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))                     
+                    }
+                 if(msgarray[q][1].includes("XCSEIGHT"+c1d2installvar1))
+                  {
+                    err = true
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/^(.*?)XCSEIGHTVCDV(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "XCS8" 
+                      if (NASPLICE = true)
+                      { 
+                        multiordersplit[q].splice(3,1,"Customer will supply")
+                      }
+                      else
+                      {
+                        multiordersplit[q].splice(3,0,"Customer will supply")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))   
+                  }
+                if(err = false)
+                  {
+                    multiordersplit[q][2] = "ERROR DETECTED"
+                    multiordersplit[q][1] = "ERROR DETECTED XCS8" 
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  }
+                }
+////////////////////////////////////////////////////////// END PROD \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+              q++
+              //Jesus take the wheel
+              //message.markRead();
+              }
+}
+}
+
+
+
+}
+
+////////DEPRECATION STATION\\\\\\\\
+                // EXPIREMENTAL SAFETY CHECK
+                /* if(err==false){
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/..hone12/g,"iPhonetwelve")
+                    .replace(/^(.*?)Intrinsically.afeiPhonetwelve.ase-No-(\D*)/g,"c1d2-certification-required:Yes")
+                    .replace(/^(.*?)c1d2-certification-required:Yes(\D*)/g,"")
+                    .replace(/\D(.*)/g,"")
+                    multiordersplit[q][1] = "FORMAT ERROR SEND HELP" 
+                    if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply" || multiordersplit[q][3] == "FORMAT ERROR SEND HELP"){ 
+                        multiordersplit[q].splice(3,1,"FORMAT ERROR SEND HELP")
+                      }
+                      else{
+                        multiordersplit[q].splice(3,0,"FORMAT ERROR SEND HELP")
+                      }
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
+                  } */
+
+
+
+                 /* . deprecated safety check, breaks logic in the off chance a C1D2 and Zone 2 of the same model is purchased
+                  else{
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-Yes-(\D*)/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                  }
+                  */
+                             /*  
+                else {
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7PlusCase-Yes-(\D*)/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7PlusCase-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
+                  }
+                */
+                /*
                   else {
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCRiPad Pro 9.7"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
+                    Logger.log(multiordersplit[q])
+                    let temphold = msgarray[q][1]
+                    multiordersplit[q][1] = temphold
+                    multiordersplit[q][2] = ""
+                    multiordersplit[q][2] = multiordersplit[q][1]
+                    .replace(/ATEX Zone 2/g,"")
+                    .replace(/C1D2/g,"")
+                    .replace(/\s/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-Yes-(\D*)/g,"")
+                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-No-(\D*)/g,"")
+                    .slice(0,1)
+                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
+                    Logger.log(multiordersplit[q])
+                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
                   }
-              }
-
-               if (msgarray[q][1].indexOf("iPhone 11") !== -1 && msgarray[q][1].indexOf("Zone 1") !== -1){
-                  msgarray[q].splice(2,0,"Customer will supply")
-                  msgarray[q][1] = "XCZ1 iPhone 11"
-                  //msgarray[q].splice(msgarray[q].length-1,1)
-                  //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-              }
-
+                  */
+                       /* depcrecation station
                if (msgarray[q][1].indexOf("iPhone 11") !== -1 && (msgarray[q][1].indexOf("XCZ1") == -1 || msgarray[q][1].indexOf("XCZ1") == -1)){
                   if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
                     msgarray[q].splice(2,0,"N/A")
@@ -404,207 +2679,13 @@ var rowlimitclear = rowlimit + 1;
                     //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
                   }
               }
-
-               if (msgarray[q][1].includes("iPhone 8") == true && msgarray[q][1].includes("Plus") == true){
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true || msgarray[q][1].includes("ATEX Zone 2 only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCiPhone 8+"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  }
-                  else {
-                    msgarray[q].splice(2,0,"Customer will supply")
-                    msgarray[q][1] = "XCiPhone 8+"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  }
-                  
+              */
+              /*
+               if (msgarray[q][1].indexOf("iPhone 11") !== -1 && msgarray[q][1].indexOf("Zone 1") !== -1){
+                  msgarray[q].splice(2,0,"Customer will supply")
+                  msgarray[q][1] = "XCZ1 iPhone 11"
+                  //msgarray[q].splice(msgarray[q].length-1,1)
+                  //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
               }
-//book mark here
-               if (msgarray[q][1].includes("iPhone 8") == true && msgarray[q][1].includes("Plus") == false){
-                
-                 if(msgarray[q][1].includes("ATEX Zone 2 Case Only") == true || msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-No-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "XCiPhone 8"
-                    if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
-                        
-                        multiordersplit[q].splice(3,1,"N/A")
-                      }
-                      else{
-                        multiordersplit[q].splice(3,0,"N/A")
-                      }
-                      
-                    //multiordersplit[q].splice(3,1,"N/A")
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
-                  }
-               
-                   if (msgarray[q][1].includes(c1d2installvar1)) {
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-Yes-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "XCiPhone 8"
-                    Logger.log(multiordersplit[q])
-                    if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
-                        
-                        multiordersplit[q].splice(3,1,"Customer will supply")
-                      }
-                      else{
-                        multiordersplit[q].splice(3,0,"Customer will supply")
-                      }
-                      Logger.log(multiordersplit[q])
-                    
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))
-                                    
-                  }
-                  else{
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-Yes-(\D*)/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone8Case-No-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
-                  }
-
-
-              }
-
-               if (msgarray[q][1].indexOf("iPhone 7") !== -1 && msgarray[q][1].indexOf("Plus") == -1){
-                
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-No-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "XCiPhone 7"
-                    
-                      if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
-                        
-                        multiordersplit[q].splice(3,1,"N/A")
-                      }
-                      else{
-                        multiordersplit[q].splice(3,0,"N/A")
-                      }
-                      Logger.log(multiordersplit[q])
-                    
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
-                    
-                    
-                  }
-
-                  if(msgarray[q][1].includes(c1d2installvar1)){
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-Yes-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "XCiPhone 7"
-                    
-                      if (multiordersplit[q][3] == 0 || multiordersplit[q][3] == "N/A" || multiordersplit[q][3] == "Customer will supply"){
-                        
-                        multiordersplit[q].splice(3,1,"Customer will supply")
-                      }
-                      else{
-                        multiordersplit[q].splice(3,0,"Customer will supply")
-                      }
-                   
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
-                    
-                    
-                  }
-                  else {
-                    let temphold = msgarray[q][1]
-                    multiordersplit[q][1] = temphold
-                    multiordersplit[q][2] = ""
-                    multiordersplit[q][2] = multiordersplit[q][1]
-                    .replace(/ATEX Zone 2/g,"")
-                    .replace(/C1D2/g,"")
-                    .replace(/\s/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-Yes-(\D*)/g,"")
-                    .replace(/^(.*?)IntrinsicallysafeiPhone7Case-No-(\D*)/g,"")
-                    .slice(0,1)
-                    multiordersplit[q][1] = "DANGER WILL ROBINSON"
-                    datasheet.appendRow(multiordersplit[q].concat(msgarrayad[q]))  
-                  }
-                  
-                  
-              }
-              
-               if (msgarray[q][1].indexOf("iPhone 7") !== -1 && msgarray[q][1].indexOf("Plus") !== -1){
-                
-                  if(msgarray[q][1].includes("ATEX Zone 2 rating only") == true){
-                    msgarray[q].splice(2,0,"N/A")
-                    msgarray[q][1] = "XCiPhone 7+"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-
-                  }
-                  else {
-                    //msgarray[q].splice(2,0,"Customer will supply")
-                    //msgarray[q][1] = "XCiPhone 7+"
-                    //msgarray[q].splice(msgarray[q].length-1,1)
-                    //datasheet.appendRow(msgarray[q].concat(msgarrayad[q]))
-                  }
-              }
-             
- 
-
-              
-              q++
-              //16 aka Q
-
-
-
-
-
-
-              }
-}
-}
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
