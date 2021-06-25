@@ -1,0 +1,66 @@
+////////////////////////////////////////////////////////////////////Begin Loops \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+              for (i=0;i < msgarrayadlength;i++){
+                if (msgarrayad[q][0] == 0 && msgarrayad[q].length >= 5) //Fat trimmer, eats blank front rows unitl 5. Dont be stupid array.length starts at 1 when arrays[] start at 0
+                {  
+                msgarrayad[q].splice(0,1) 
+                }
+                 if (msgarrayad[q][0] == 0 && msgarrayad[q].length == 4) //(company == attn) this needs to go below the fat trimmer or else it will never see it
+                { 
+                msgarrayad[q][0] = msgarrayad[q][1]
+                }
+                if (msgarrayad[q] !== 0 && msgarrayad[q].length == 4)
+                {
+                zipsplit[q] = msgarrayad[q][3].split(/\s/gm)
+                  if (zipsplit[q].length == 5 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 3 word city converter with zip
+                  {
+                    zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
+                    zipsplit[q].splice(1,2)
+                  }
+                  if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 3 word city converter NO zip
+                  {
+                    zipsplit[q][0] = zipsplit[q][0] + " " + zipsplit[q][1] + " " + zipsplit[q][2]
+                    zipsplit[q].splice(1,2)
+                    zipsplit[q].push("MISSING ZIP")
+                  }
+                  if (zipsplit[q].length == 4 && (!Number(zipsplit[q][zipsplit[q].length-1]) == false)) // 2 word city converter with zip
+                  {
+                    var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
+                    zipsplit[q].splice(0,2,combinetwoname)
+                  }
+                  if (zipsplit[q].length == 3 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true) && !zipsplit[q][zipsplit[q].length-1].includes("-") && 
+                  zipsplit[q][zipsplit[q].length-1] !=="MISSING ZIP") // 2 word city converter NO zip
+                  {
+                    var combinetwoname = zipsplit[q][0] + " " + zipsplit[q][1]
+                    zipsplit[q].splice(0,2,combinetwoname)
+                    zipsplit[q].push("MISSING ZIP")
+                  }
+                  if (zipsplit[q].length == 2 && (!Number(zipsplit[q][zipsplit[q].length-1]) == true)) // 1 WORD CITY NO ZIP // 00000 SAFETY CATCH IS REDUNDANT
+                  {
+                    zipsplit[q].push("MISSING ZIP")
+                  }
+                  if (zipsplit[q].length == 3)
+                  {
+                    let removecomma = zipsplit[q][0]
+                    zipsplit[q][0] = removecomma.substring(zipsplit[q][0].length -1,-1) // might be a more efficent method than the original
+                    msgarrayad[q].splice(3,1)
+                    msgarrayad[q].push(zipsplit[q][0],zipsplit[q][1],zipsplit[q][2])
+                  }
+                }
+              }
+              // convert 5 lines, coded this outside the fat trimmer prob going to regret later ngl
+              let zipsplit2 = []
+              zipsplit2[q] = msgarrayad[q][msgarrayad[q].length-1].split(/\s/gm)
+              if (msgarrayad[q].length == 5 && zipsplit2[q].length >= 2)
+              {
+                if (zipsplit2[q].length == 4)
+                {
+                  zipsplit2[q][0] = zipsplit2[q][0] + " " + zipsplit2[q][1]
+                  zipsplit2[q].splice(1,1)
+                }
+                let removecomma = zipsplit2[q][0]
+                zipsplit2[q][0] = removecomma.substring(zipsplit2[q][0].length -1,-1) // might be a more efficent method than the original
+                msgarrayad[q][2] = msgarrayad[q][2]+ " " + msgarrayad[q][3]
+                msgarrayad[q].splice(3,1)
+                msgarrayad[q].splice(msgarrayad[q].length-1, 1)
+                msgarrayad[q].push(zipsplit2[q][0], zipsplit2[q][1], zipsplit2[q][2])
+              }
