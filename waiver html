@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/></head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/willowsystems/jSignature/master/libs/jSignature.min.js"></script>
+<style>
+.next {
+  display: inline-block;
+  text-align: center;
+  width:500px;
+  height:35px;
+  
+  
+  }
+
+  .popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-size: 200%;
+  z-index: 100;
+  
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  //display: block
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  margin-left: 0;
+}
+
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  //display:block;
+  visibility: visible;
+  animation: fadeIn ease 5s;
+  //-webkit-animation: fadeIn 2s;
+  //animation: fadeIn 2s
+}
+
+.popup .fade {
+  visibility: visible;
+  -webkit-animation: fadeOut 2s;
+  animation: fadeOut 2s
+}
+
+.popup .close {
+  visibility: hidden;
+}
+
+/* Add animation (fade in the popup) 
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+*/
+@keyframes fadeIn{
+  0% {
+    opacity:0;
+  }
+  33% {
+    opacity:1;
+  }
+  66% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+/*@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+*/
+@-webkit-keyframes fadeOut {
+  from {opacity: 1;} 
+  to {opacity: 0;}
+}
+
+/*
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity:0 ;}
+}
+*/
+
+
+
+
+
+body {background-color:transparent;width:39em;margin:auto;border: 3px solid black;padding:2em 2em 2em 2em}
+h1 {text-align: center;padding-bottom:1em;font-family:verdana;}
+p {text-align: left;font-family:arial;margin:0 2em 0 2em}
+p1 {font-family:verdana;display:inline-block;padding:1em 0 1em 0;}
+p2 {text-align: left;font-family: sans-serif;}
+p3 {text-align: left;padding:0 0 0 0;font-family:verdana;font-size:10px;}
+p4 {text-align: center;padding: 0 0 0 0;font-family:verdana;font-size:2em;color:green;display:none}
+input{background-color: #f2f2f2;margin:auto;display:block;width:400px;height:3em;}
+div {background-color: #f2f2f2;text-align: center;margin-bottom:0;background-image:url("https://i.imgur.com/Z2575Ch.png");background-repeat: no-repeat;background-size: cover;}
+img {display: block;margin-left: auto;margin-right: auto;margin-top:0}
+button {margin:0 0 0 0;width:10em;height:3em;font-size:16px}
+.save{margin:0 0 2em 0;}
+</style>
+<body>
+<form id="customerForm">
+<a href="https://imgur.com/m67ygnq"><img src="https://i.imgur.com/m67ygnq.png" title="source: imgur.com" /></a>
+<h1>Acknowledgement of Limited Liability</h1>
+<p>THIS LIMITED LIABILITY WAIVER IS ONLY VALID FOR CASES AND DEVICES THAT WILL BE
+USED IN ZONE 2 ONLY.</p><br>
+<p>THE LABELS ON THE CASE AND THE CERTIFICATE WILL REFLECT ONLY ZONE 2 VALIDITY.
+WOULD THE DEVICE BE USED IN CLASS 1 DIV 2 (C1D2), XCIEL AND ITS AUTHORIZED
+CERTIFIED PARTNERS NEED TO INSTALL THE DEVICE IN THE CASE TO GET THE C1D2
+CERTIFICATE.</p><br><br>
+<p2>You, the Customer, acknowledge that you will install the Device into the ATEX Zone2 Xciel Enclosure and that Xciel has no responsibility for any installation not performed by Xciel or Xciel approved installers. If the workmanship of such an
+installation is not properly performed, the customer bears all liability for any damages that may result from such
+workmanship.</p2><br><br>
+<p2>If you, the Customer, replaces the Device in the ATEX Zone2 Xciel Enclosure, or otherwise repairs the ATEX Zone2 Xciel
+Enclosure, the same above-described disclaimers apply wherein Xciel is not responsible.</p2><br><br>
+<p2>All normal Xciel manufacturing warranties and guarantees still apply to the ATEX Zone2 Xciel Enclosure upon receipt of the
+ATEX Zone2 Xciel Enclosure by the Customer, wherein Xciel remains responsible for manufacturing defects in the ATEX
+Zone2 Xciel Enclosure</p2><br><br><br>
+<p1>This Waiver is for Model: <input type="text" STYLE="color: #000000; font-family: Verdana; font-weight: bold; font-size: 13px; background-color: #FFFFFF;" value=" iPhone 12" name = "usermodel" readonly></p1><br>
+<p1>Full Name:<input type="text" name="username"></p1><br>
+<p1>Company: <input type="text" name="usercompany"></p1><br><br><br>
+<p1>If you agree to the aforementioned terms please sign below:</p1><br>
+<p3>(Hold the left mouse button down and drag on the canvas below)</p3><br><br>
+<p4 id = "sigA">Waiver Accepted.<br>Please click Next to continue.</p4>
+<div class="popup"><span class="popuptext" id="myPopup">Please enter a valid signature</span></div>
+<div id="signature"></div>
+<img id="rendered" src="" style="display:none">
+<br><br><br>
+<button type = "button" id="saverino" class = "save" style="float: right;" onclick="addOrder()">Sign</button>
+<button type = "button" id="next" class = "next" style="float:right;display: none">Next</button>
+<button type = "button" id="clear" class ="clear" onclick ="clearSignature()">Clear</button>
+<br>
+
+</form>
+</body>
+<script>
+  document.getElementById("signature").style.border = "3px solid black";
+  
+  
+  $("#signature").jSignature({
+    'background-color': 'transparent',
+    'decor-color': 'black'
+  });
+
+  function clearSignature(){
+    $("#signature").jSignature("reset");
+  }
+
+
+  function renderSignature(){
+    $("img#rendered").attr("src",$('#signature').jSignature('getData','default'));
+  }
+
+ function addOrder(){
+   if( $("#signature").jSignature('getData', 'native').length == 0) {
+    clearTimeout()
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+    setTimeout(() => popup.classList.toggle("close"), 5000)
+    //popup.classList.toggle("fade");
+     /* if(popup.classList.contains("show")) {// Check if the popup is shown
+        setTimeout(() => popup.classList.toggle("fade"), 2000)
+        setTimeout(() => popup.classList.toggle("close"), 4000)
+         } */
+    return
+ }
+    document.getElementById("saverino").style.display = "none";
+    document.getElementById("clear").style.display = "none";
+    document.getElementById("next").style.display = "block";
+    document.getElementById("signature").style.display = "none";
+    document.getElementById("sigA").style.display ="block"
+    
+    
+ }
+
+
+
+
+
+</script>
+
+
+
+</html>
+
+
+
+<!--  location.href = 'https://xciel-inc-1.mybigcommerce.com/xciphone-12-mini/';
+
+
+
+if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+      
+    }
+
+
+
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/></head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/willowsystems/jSignature/master/libs/jSignature.min.js"></script>
+<style>
+body {background-color:transparent;width:39em;margin:auto;border: 3px solid black;padding:2em 2em 2em 2em}
+h1 {text-align: center;padding-bottom:1em;font-family:verdana;}
+p {text-align: left;font-family:arial;margin:0 2em 0 2em}
+p1 {font-family:verdana;display:inline-block;padding:1em 0 1em 0;}
+p2 {text-align: left;font-family: sans-serif;}
+p3 {text-align: left;padding:0 0 0 0;font-family:verdana;font-size:10px;}
+input{background-color: #f2f2f2;margin:auto;display:block;width:400px;height:3em;}
+div {background-color: #f2f2f2;text-align: center;margin-bottom:2em;background-image:url("https://i.imgur.com/Z2575Ch.png");background-repeat: no-repeat;background-size: cover;}
+img {display: block;margin-left: auto;margin-right: auto;margin-top:0}
+button {margin:0 0 0 0;width:10em;height:3em;font-size:16px}
+.save{margin:0 0 2em 0;}
+</style>
+<body>
+<form id="customerForm">
+<a href="https://imgur.com/m67ygnq"><img src="https://i.imgur.com/m67ygnq.png" title="source: imgur.com" /></a>
+<h1>Acknowledgement of Limited Liability</h1>
+<p>THIS LIMITED LIABILITY WAIVER IS ONLY VALID FOR CASES AND DEVICES THAT WILL BE
+USED IN ZONE 2 ONLY.</p><br>
+<p>THE LABELS ON THE CASE AND THE CERTIFICATE WILL REFLECT ONLY ZONE 2 VALIDITY.
+WOULD THE DEVICE BE USED IN CLASS 1 DIV 2 (C1D2), XCIEL AND ITS AUTHORIZED
+CERTIFIED PARTNERS NEED TO INSTALL THE DEVICE IN THE CASE TO GET THE C1D2
+CERTIFICATE.</p><br><br>
+<p2>You, the Customer, acknowledge that you will install the Device into the ATEX Zone2 Xciel Enclosure and that Xciel has no responsibility for any installation not performed by Xciel or Xciel approved installers. If the workmanship of such an
+installation is not properly performed, the customer bears all liability for any damages that may result from such
+workmanship.</p2><br><br>
+<p2>If you, the Customer, replaces the Device in the ATEX Zone2 Xciel Enclosure, or otherwise repairs the ATEX Zone2 Xciel
+Enclosure, the same above-described disclaimers apply wherein Xciel is not responsible.</p2><br><br>
+<p2>All normal Xciel manufacturing warranties and guarantees still apply to the ATEX Zone2 Xciel Enclosure upon receipt of the
+ATEX Zone2 Xciel Enclosure by the Customer, wherein Xciel remains responsible for manufacturing defects in the ATEX
+Zone2 Xciel Enclosure</p2><br><br><br>
+<p1>This Waiver is for Model: <input type="text" STYLE="color: #000000; font-family: Verdana; font-weight: bold; font-size: 13px; background-color: #FFFFFF;" value="*AUTO FILL*" name = "usermodel" readonly></p1><br>
+<p1>Full Name:<input type="text" name="username"></p1><br>
+<p1>Company: <input type="text" name="usercompany"></p1><br><br><br>
+<p1>If you agree to the aforementioned terms please sign below:</p1><br>
+<p3>(Hold the left mouse button down and drag on the canvas below)</p3><br><br>
+<div id="signature"></div>
+<img id="rendered" src="" style="display:none">
+<button type = "button" class = "save" style="float: right;" onclick="addOrder()">Sign</button>
+<button type = "button" class ="clear" onclick ="clearSignature()">Clear</button>
+
+</form>
+<button type = "button" class ="clear" onclick ="addOrder()">Next</button>
+</body>
+<script>
+  document.getElementById("signature").style.border = "3px solid black";
+  
+  
+  $("#signature").jSignature({
+    'background-color': 'transparent',
+    'decor-color': 'black'
+  });
+
+  function clearSignature(){
+    $("#signature").jSignature("reset");
+  }
+
+  function addOrder(){
+    location.href = 'https://xciel-inc-1.mybigcommerce.com/xciphone-12-mini/';
+  }
+
+  function replaceButton(){
+    document.getElementById("signature").hide
+  }
+
+</script>
+
+
+
+</html>
